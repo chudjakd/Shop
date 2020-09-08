@@ -1,0 +1,108 @@
+package com.dejvo.Shop.db.repository;
+
+import com.dejvo.Shop.db.mapper.ProductRowMapper;
+import com.dejvo.Shop.db.mapper.SellerRowMapper;
+import com.dejvo.Shop.db.request.UpdateProductRequest;
+import com.dejvo.Shop.model.Product;
+import com.dejvo.Shop.model.Seller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
+
+@Component
+public class ProductRepository {
+
+    ProductRowMapper productRowMapper;
+    JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public ProductRepository(ProductRowMapper productRowMapper, JdbcTemplate jdbcTemplate) {
+        this.productRowMapper = productRowMapper;
+        this.jdbcTemplate = jdbcTemplate;
+
+    }
+
+    public Integer createProduct(Product product){
+
+        String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,datetime) VALUES (?,?,?,?,?,?)";
+        KeyHolder keyHolder=new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps= connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                ps.setLong(1,product.getSellerId());
+                ps.setString(2,product.getName());
+                ps.setString(3,product.getInfo());
+                ps.setDouble(4,product.getValue());
+                ps.setInt(5,product.getCount());
+                ps.setTimestamp(6,product.getDatetime());
+                return ps;
+            }
+        },keyHolder);
+
+        if(keyHolder!=null){
+            return keyHolder.getKey().intValue();
+        }
+        else{
+            return null;
+        }
+    }
+
+    public Product readProductById(Long id) {
+        try{
+            String query="SELECT * FROM PRODUCT WHERE ID="+id.toString();
+            return jdbcTemplate.queryForObject(query,productRowMapper);
+
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+
+    }
+
+    public List<Product> readAllProducts(){
+
+        String query="SELECT * FROM product";
+
+        return jdbcTemplate.query(query,productRowMapper);
+
+    }
+
+    public int updateProduct(Long id, UpdateProductRequest request){
+        try{
+            String updateQuery = "update Product set name = ?, info =?, value=?, count =? where id = ?";
+            jdbcTemplate.update(updateQuery,request.getName()
+                    ,request.getInfo()
+                    ,request.getValue()
+                    ,request.getCount()
+                    ,id);
+            return 1;
+        }
+        catch (DataAccessException e){
+            return 0;
+        }
+    }
+
+    public int deleteProduct(Long id){
+        try{
+            String deleteQuery= "DELETE FROM product WHERE ID="+id.toString();
+            jdbcTemplate.update(deleteQuery);
+            return 1;
+        }
+        catch (DataAccessException e){
+            System.out.println("nepodarilo sa");
+            return 0;
+        }
+    }
+
+}
