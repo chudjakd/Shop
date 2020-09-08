@@ -11,11 +11,11 @@ public class UpdateProductRequest {
     @NonNull
     private String info;
     @NonNull
-    private int value;
+    private double value;
     @NonNull
     private int count;
 
-    public UpdateProductRequest(String name, String info, int value, int count) {
+    public UpdateProductRequest(@NonNull String name, @NonNull String info, double value, int count) {
         this.name = name;
         this.info = info;
         this.value = value;
@@ -31,8 +31,8 @@ public class UpdateProductRequest {
     public String getInfo() {
         return info;
     }
-
-    public int getValue() {
+    @NonNull
+    public double getValue() {
         return value;
     }
 
