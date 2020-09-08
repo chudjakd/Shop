@@ -1,5 +1,7 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
+import com.dejvo.Shop.db.mapper.CustomerRowMapper;
+import com.dejvo.Shop.db.repository.CustomerRepository;
 import com.dejvo.Shop.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,28 +15,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class CustomerInterfaceTest {
 
-
-    JdbcTemplate jdbcTemplate;
+    CustomerRepository customerRepository;
     @Autowired
-    CustomerImplementacia customerImplementacia = new CustomerImplementacia(jdbcTemplate);
+    CustomerImplementacia customerImplementacia = new CustomerImplementacia(customerRepository);
 
-    @Test
-    void readCustomerById() {
-        assertEquals(1, customerImplementacia.readCustomerById(2L).size());
-    }
 
     @Test
     void readCustomerById2AndCompareName() {
-        assertEquals("Janko", customerImplementacia.readCustomerById(2L).get(0).getName());
+        assertEquals("Pulder", customerImplementacia.readCustomerById(1L).getName());
     }
     @Test
     void readCustomerById5AndCompareName() {
-        assertEquals("Erdo", customerImplementacia.readCustomerById(5L).get(0).getName());
+        assertEquals("Erdo", customerImplementacia.readCustomerById(6L).getName());
     }
 
     @Test
     void readAllCustomers() {
-        assertEquals(3, customerImplementacia.readAllCustomers().size());
+        assertEquals(2, customerImplementacia.readAllCustomers().size());
     }
 
     @Test
@@ -54,7 +51,7 @@ class CustomerInterfaceTest {
         customer.setEmail("puldo@grag.sk");
         customer.setAddress("Japerova 54");
 
-        customerImplementacia.updateCustomer(customer,2L);
+        assertEquals(0,customerImplementacia.updateCustomer(customer,2L));
     }
     @Test
     public void deleteCustomerWithId5(){
