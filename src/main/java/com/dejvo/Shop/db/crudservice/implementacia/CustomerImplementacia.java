@@ -1,16 +1,12 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
-import com.dejvo.Shop.db.mapper.CustomerRowMapper;
+
 import com.dejvo.Shop.db.repository.CustomerRepository;
 import com.dejvo.Shop.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import org.springframework.stereotype.Service;
+;
 import java.util.List;
 
 @Service
