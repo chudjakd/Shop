@@ -28,6 +28,23 @@ public class Product {
     public Product() {
     }
 
+    @NonNull
+    public Timestamp getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(@NonNull Timestamp datetime) {
+        this.datetime = datetime;
+    }
+
+    public long getSellerId() {
+        return sellerId;
+    }
+
+    public void setSellerId(long sellerId) {
+        this.sellerId = sellerId;
+    }
+
     public Long getId() {
         return id;
     }
