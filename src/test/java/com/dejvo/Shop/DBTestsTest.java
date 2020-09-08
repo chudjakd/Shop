@@ -82,7 +82,7 @@ class DBTestsTest {
                 ps.setLong(1,product.getSellerId());
                 ps.setString(2,product.getName());
                 ps.setString(3,product.getInfo());
-                ps.setInt(4,product.getValue());
+                ps.setDouble(4,product.getValue());
                 ps.setInt(5,product.getCount());
                 ps.setTimestamp(6,product.getDatetime());
                 return ps;
