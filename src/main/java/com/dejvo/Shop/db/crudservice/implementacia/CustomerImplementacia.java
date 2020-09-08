@@ -19,8 +19,9 @@ public class CustomerImplementacia implements com.dejvo.Shop.db.crudservice.Cust
     }
 
     @Override
-    public Integer createCustomer(Customer customer) {
-        return customerRepository.createCustomer(customer);
+    public Customer createCustomer(Customer customer) {
+        Integer key=customerRepository.createCustomer(customer);
+        return key!=null ? customerRepository.readCustomerById(Integer.toUnsignedLong(key)) : null;
     }
 
     @Override
