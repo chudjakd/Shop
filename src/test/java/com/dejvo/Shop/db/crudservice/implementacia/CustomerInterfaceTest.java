@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class CustomerInterfaceTest {
+    // TODO: 8. 9. 2020 Ak chces testovat musis si davat pozor lebo tieto testy su pripojene na mysql databazu a moze sa stat ze uz nebudu existovat niektory pouzivatelia
+    // ak to potom chces tak prerobit tak musis pred kazdu classu dat @DirtiesContext(classmode = DirtiesContext.ClassMode.BEFORE.class)
 
     CustomerRepository customerRepository;
     @Autowired
