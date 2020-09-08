@@ -1,6 +1,7 @@
 package com.dejvo.Shop.model;
 
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -22,7 +23,7 @@ public class Product {
     public double value;
     @NonNull
     public int count;
-    @NonNull
+    @Nullable
     public Timestamp datetime;
 
     public Product() {
@@ -37,7 +38,7 @@ public class Product {
         this.datetime = datetime;
     }
 
-    @NonNull
+    @Nullable
     public Timestamp getDatetime() {
         return datetime;
     }

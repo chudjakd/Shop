@@ -14,10 +14,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.Instant;
 import java.util.List;
 
 @Component
@@ -46,7 +44,12 @@ public class ProductRepository {
                 ps.setString(3,product.getInfo());
                 ps.setDouble(4,product.getValue());
                 ps.setInt(5,product.getCount());
-                ps.setTimestamp(6,product.getDatetime());
+                if(product.getDatetime()==null){
+                    ps.setTimestamp(6, Timestamp.from(Instant.now()));
+                }else{
+                    ps.setTimestamp(6,product.getDatetime());
+                }
+
                 return ps;
             }
         },keyHolder);
