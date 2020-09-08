@@ -3,18 +3,20 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 import com.dejvo.Shop.db.crudservice.SellerInterface;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.Seller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
-
+@Service
 public class SellerImplementation implements SellerInterface {
 
     JdbcTemplate jdbcTemplate;
-
+    @Autowired
     public SellerImplementation(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
