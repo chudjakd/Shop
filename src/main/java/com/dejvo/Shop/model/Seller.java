@@ -22,17 +22,17 @@ public class Seller {
     @NonNull
     private String address;
 
-    private Set<Product> products;
+//    private Set<Product> products;
 
     public Seller() {
     }
 
-    public Seller(Long id, String name, String email, String adress, Set<Product> products) {
+    public Seller(Long id, String name, String email, String adress) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.address = adress;
-        this.products = products;
+
     }
 
     public Long getId() {
@@ -66,12 +66,12 @@ public class Seller {
     public void setAddress(String adress) {
         this.address = adress;
     }
-
-    public Set<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
+//
+//    public Set<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(Set<Product> products) {
+//        this.products = products;
+//    }
 }
