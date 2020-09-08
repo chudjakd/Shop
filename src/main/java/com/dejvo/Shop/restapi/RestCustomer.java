@@ -4,6 +4,8 @@ import com.dejvo.Shop.db.crudservice.CustomerInterface;
 import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -18,19 +20,33 @@ public class RestCustomer {
 
 
     @GetMapping("/customers")
-    public List<Customer> getAllCustomers(){
-        return customerInterface.readAllCustomers();
+    public ResponseEntity getAllCustomers(){
+
+        List<Customer> listOfCustomers=customerInterface.readAllCustomers();
+        return new ResponseEntity<>(listOfCustomers, HttpStatus.OK);
 
     }
 
     @GetMapping("/customer/{id}")
-    public Customer getCustomerById(@PathVariable("id") Long id){
-        return customerInterface.readCustomerById(id);
+    public ResponseEntity getCustomerById(@PathVariable("id") Long id){
+        Customer customer=customerInterface.readCustomerById(id);
+        if(customer!=null){
+            return new ResponseEntity<>(customer,HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/customer")
-    public Customer createCustomerById(@RequestBody Customer customer){
-        return customerInterface.createCustomer(customer);
+    public ResponseEntity createCustomerById(@RequestBody Customer customer){
+        Customer customeris=customerInterface.createCustomer(customer);
+        if(customeris!=null){
+            return new ResponseEntity<>(customeris,HttpStatus.CREATED);
+        }
+        else {
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
     }
 
     @DeleteMapping("/customer/{id}")
@@ -39,8 +55,13 @@ public class RestCustomer {
     }
 
     @PutMapping("/customer/{id}")
-    public void updateCustomerById(@PathVariable("id") Long id,@RequestBody UpdateCustomerRequest request){
-        customerInterface.updateCustomer(request,id);
+    public ResponseEntity updateCustomerById(@PathVariable("id") Long id,@RequestBody UpdateCustomerRequest request){
+        if(customerInterface.updateCustomer(request,id)==1){
+            return new ResponseEntity<>("{}",HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+        }
     }
 
 }
