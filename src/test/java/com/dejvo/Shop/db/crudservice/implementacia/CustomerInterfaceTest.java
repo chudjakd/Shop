@@ -19,6 +19,10 @@ class CustomerInterfaceTest {
     @Autowired
     CustomerImplementacia customerImplementacia = new CustomerImplementacia(customerRepository);
 
+    @Test
+    public void customer(){
+
+    }
 
     @Test
     void readCustomerById2AndCompareName() {
@@ -43,16 +47,16 @@ class CustomerInterfaceTest {
         customerImplementacia.createCustomer(customer);
     }
 
-    @Test
-    public void updateCustomerWithId2(){
-        Customer customer = new Customer();
-        customer.setId(1L);
-        customer.setName("Pulder");
-        customer.setEmail("puldo@grag.sk");
-        customer.setAddress("Japerova 54");
-
-        assertEquals(0,customerImplementacia.updateCustomer(customer,2L));
-    }
+//    @Test
+//    public void updateCustomerWithId2(){
+//        Customer customer = new Customer();
+//        customer.setId(1L);
+//        customer.setName("Pulder");
+//        customer.setEmail("puldo@grag.sk");
+//        customer.setAddress("Japerova 54");
+//
+//        assertEquals(0,customerImplementacia.updateCustomer(customer,2L));
+//    }
     @Test
     public void deleteCustomerWithId5(){
         customerImplementacia.deleteCustomer(5L);

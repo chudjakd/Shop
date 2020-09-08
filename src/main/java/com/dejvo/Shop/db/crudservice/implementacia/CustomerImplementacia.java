@@ -2,7 +2,9 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 
 
 import com.dejvo.Shop.db.repository.CustomerRepository;
+import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
+import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -34,8 +36,8 @@ public class CustomerImplementacia implements com.dejvo.Shop.db.crudservice.Cust
         return customerRepository.readAllCustomers();
     }
     @Override
-    public int updateCustomer(Customer customer, Long id){
-        return customerRepository.updateCustomer(customer,id);
+    public int updateCustomer(UpdateCustomerRequest request, Long id){
+        return customerRepository.updateCustomer(request,id);
     }
 
     @Override

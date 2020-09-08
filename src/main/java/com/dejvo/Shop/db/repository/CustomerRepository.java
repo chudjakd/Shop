@@ -1,6 +1,7 @@
 package com.dejvo.Shop.db.repository;
 
 import com.dejvo.Shop.db.mapper.CustomerRowMapper;
+import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -72,13 +73,12 @@ public class CustomerRepository {
 
     }
 
-    public int updateCustomer(Customer customer, Long id){
+    public int updateCustomer(UpdateCustomerRequest request, Long id){
         try{
-            String updateQuery = "update Customer set id = ?, name =?, email=?,address =? where id = ?";
-            jdbcTemplate.update(updateQuery,customer.getId()
-                    ,customer.getName()
-                    ,customer.getEmail()
-                    ,customer.getAddress()
+            String updateQuery = "update Customer set name = ?, email =?, address=? where id = ?";
+            jdbcTemplate.update(updateQuery,request.getName()
+                    ,request.getEmail()
+                    ,request.getAddress()
                     ,id);
             return 1;
         }
