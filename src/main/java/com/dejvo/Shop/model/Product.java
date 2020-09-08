@@ -19,13 +19,22 @@ public class Product {
     @NonNull
     public String info;
     @NonNull
-    public int value;
+    public double value;
     @NonNull
     public int count;
     @NonNull
     public Timestamp datetime;
 
     public Product() {
+    }
+
+    public Product( long sellerId, @NonNull String name, @NonNull String info, double value, int count, @NonNull Timestamp datetime) {
+        this.sellerId = sellerId;
+        this.name = name;
+        this.info = info;
+        this.value = value;
+        this.count = count;
+        this.datetime = datetime;
     }
 
     @NonNull
@@ -69,11 +78,11 @@ public class Product {
         this.info = info;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
