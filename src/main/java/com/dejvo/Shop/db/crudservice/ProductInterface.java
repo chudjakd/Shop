@@ -8,11 +8,12 @@ import com.sun.istack.Nullable;
 import java.util.List;
 
 public interface ProductInterface {
-    public void createProduct(Product product);
+
+    public int createProduct(Product product);
     @Nullable
-    public List<Product> readProductById(Long id);
+    public Product readProductById(Long id);
     public List<Product> readAllProducts();
     public int updateProduct (UpdateProductRequest request, Long id);
-    public void deleteProduct (Long id);
+    public int deleteProduct (Long id);
 
 }

@@ -1,6 +1,9 @@
 package com.dejvo.Shop.db.request;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+
 
 public class UpdateProductRequest {
     @NonNull
@@ -12,7 +15,7 @@ public class UpdateProductRequest {
     @NonNull
     private int count;
 
-    public UpdateProductRequest(@NonNull String name, @NonNull String info, int value, int count) {
+    public UpdateProductRequest(String name, String info, int value, int count) {
         this.name = name;
         this.info = info;
         this.value = value;
