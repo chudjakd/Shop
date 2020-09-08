@@ -1,47 +1,43 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
-import com.dejvo.Shop.model.Customer;
+import com.dejvo.Shop.db.repository.SellerRepository;
 import com.dejvo.Shop.model.Seller;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class SellerImplementationTest {
-    JdbcTemplate jdbcTemplate;
-    @Autowired
-    SellerImplementation sellerImplementation = new SellerImplementation(jdbcTemplate);
 
-    @Test
-    void readSellerById() {
-        assertEquals(1, sellerImplementation.readSellerById(2L).size());
-    }
+    SellerRepository sellerRepository;
+    @Autowired
+    SellerImplementation sellerImplementation = new SellerImplementation(sellerRepository);
 
     @Test
     void readSellerById2AndCompareName() {
-        assertEquals("Ertr", sellerImplementation.readSellerById(2L).get(0).getName());
+        assertEquals("Ertr", sellerImplementation.readSellerById(1L).getName());
     }
+
     @Test
     void readSellerById4AndCompareName() {
-        assertEquals("Erdo", sellerImplementation.readSellerById(4L).get(0).getName());
+        assertEquals("Erdo", sellerImplementation.readSellerById(4L).getName());
     }
 
     @Test
     void readAllSellersAndCompareSize() {
-        assertEquals(4, sellerImplementation.readAllSellers().size());
+        assertEquals(3, sellerImplementation.readAllSellers().size());
     }
 
     @Test
     public void createSeller() {
         Seller seller = new Seller();
-        seller.setName("Erdo");
-        seller.setEmail("erdo@grag.sk");
-        seller.setAddress("Amperko 54");
+        seller.setName("New seller");
+        seller.setEmail("sellerko@grag.sk");
+        seller.setAddress("Aperkasdfad 54");
         sellerImplementation.createSeller(seller);
     }
 
@@ -57,7 +53,7 @@ class SellerImplementationTest {
     }
     @Test
     public void deleteCustomerWithId2(){
-        sellerImplementation.deleteSeller(2L);
+        sellerImplementation.deleteSeller(5L);
     }
 
 
