@@ -19,16 +19,16 @@ public class Customer {
     @NonNull
     private String email;
     @NonNull
-    private String adress;
+    private String address;
 
     public Customer() {
     }
 
-    public Customer(Long id, String name, String email, String adress) {
+    public Customer(Long id, String name, String email, String address) {
         this.id = id;
         this.name = name;
         this.email = email;
-        this.adress = adress;
+        this.address = address;
     }
 
     public Long getId() {
@@ -55,11 +55,11 @@ public class Customer {
         this.email = email;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 }
