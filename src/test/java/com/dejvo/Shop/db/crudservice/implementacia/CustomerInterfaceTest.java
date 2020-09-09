@@ -27,7 +27,7 @@ class CustomerInterfaceTest {
 
     @BeforeEach
     public void createCustomerIn(){
-        Customer customer= new Customer(1L,"Jozko","jozko@gmail.com","Pokorova 85");
+        Customer customer= new Customer("Jozko","jozko@gmail.com","Pokorova 85");
         customerImplementacia.createCustomer(customer);
     }
 
