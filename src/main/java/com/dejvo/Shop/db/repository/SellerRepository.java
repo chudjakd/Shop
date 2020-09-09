@@ -74,7 +74,7 @@ public class SellerRepository {
 
     public int updateSeller(UpdateSellerRequest request, Long id){
         try{
-            String updateQuery = "update Seller name =?, email=?,address =? where id = ?";
+            String updateQuery = "update Seller set name =?, email=?,address =? where id = ?";
             jdbcTemplate.update(updateQuery
                     ,request.getName()
                     ,request.getEmail()
