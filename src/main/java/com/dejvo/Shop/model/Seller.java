@@ -27,8 +27,7 @@ public class Seller {
     public Seller() {
     }
 
-    public Seller(Long id, String name, String email, String adress) {
-        this.id = id;
+    public Seller( String name, String email, String adress) {
         this.name = name;
         this.email = email;
         this.address = adress;

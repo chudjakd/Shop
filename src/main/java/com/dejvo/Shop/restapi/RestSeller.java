@@ -38,7 +38,7 @@ public class RestSeller {
     public ResponseEntity createSeller(@RequestBody Seller seller){
         Seller seller1=sellerInterface.createSeller(seller);
         if(seller1!=null){
-            return new ResponseEntity<>(seller1,HttpStatus.OK);
+            return new ResponseEntity<>(seller1,HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
