@@ -1,6 +1,7 @@
 package com.dejvo.Shop;
 
 import com.dejvo.Shop.model.Customer;
+import com.dejvo.Shop.model.CustomerAccount;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ class DBTestsTest {
     private final String insertCustomer= "INSERT INTO CUSTOMER (name,email,address) VALUES (?,?,?)";
     private final String insertSeller= "INSERT INTO SELLER (name,email,address) VALUES (?,?,?)";
     private final String insertProduct= "INSERT INTO PRODUCT (seller_id,name,info,value,count,datetime) VALUES (?,?,?,?,?,?)";
+    private final String insertCustomerAccount="INSERT INTO customer_account  (customer_id,money) VALUES (?,?)";
     @Test
     public void createCustomer(){
         Customer customer= new Customer();
@@ -85,6 +87,24 @@ class DBTestsTest {
                 ps.setDouble(4,product.getValue());
                 ps.setInt(5,product.getCount());
                 ps.setTimestamp(6,product.getDatetime());
+                return ps;
+            }
+        });
+
+    }
+
+    @Test
+    public void createCustomerAccount(){
+        CustomerAccount customerAccount= new CustomerAccount();
+        customerAccount.setCustomerid(7);
+        customerAccount.setMoney(250.5);
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps= connection.prepareStatement(insertCustomerAccount);
+                ps.setInt(1,7);
+                ps.setDouble(2,250.5);
                 return ps;
             }
         });

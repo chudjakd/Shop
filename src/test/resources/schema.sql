@@ -25,3 +25,10 @@ CREATE TABLE product (
   created_at datetime NOT NULL,
   count int(11) NOT NULL
 );
+
+DROP TABLE IF EXISTS product;
+CREATE TABLE customer_account (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  customer_id int(11) NOT NULL,
+  money double NOT NULL
+  );
