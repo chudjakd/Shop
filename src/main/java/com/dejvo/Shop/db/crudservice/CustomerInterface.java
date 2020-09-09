@@ -11,5 +11,5 @@ public interface CustomerInterface {
     public Customer readCustomerById(Long id);
     public List<Customer> readAllCustomers();
     public int updateCustomer (UpdateCustomerRequest request, Long id);
-    public void deleteCustomer (Long id);
+    public int deleteCustomer (Long id);
 }

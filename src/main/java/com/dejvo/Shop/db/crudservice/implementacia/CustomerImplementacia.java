@@ -41,7 +41,7 @@ public class CustomerImplementacia implements com.dejvo.Shop.db.crudservice.Cust
     }
 
     @Override
-    public void deleteCustomer(Long id) {
-        customerRepository.deleteCustomer(id);
+    public int deleteCustomer(Long id) {
+        return customerRepository.deleteCustomer(id);
     }
 }
