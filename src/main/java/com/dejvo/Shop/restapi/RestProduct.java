@@ -32,8 +32,9 @@ public class RestProduct {
     // TODO: 9. 9. 2020 Nedovolit pridat produkt bez niektoreho parametra
     @PostMapping("/product")
     public ResponseEntity createProduct(@RequestBody Product product){
-        if(productInterface.createProduct(product)!=null){
-            return new ResponseEntity<>("Product was created successful",HttpStatus.OK);
+        Integer key=productInterface.createProduct(product);
+        if(key!=null){
+            return new ResponseEntity<>(key,HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>("Hmm something is bad",HttpStatus.PRECONDITION_FAILED);
