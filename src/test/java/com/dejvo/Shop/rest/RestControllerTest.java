@@ -1,12 +1,16 @@
 package com.dejvo.Shop.rest;
 
+import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Customer;
+import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -34,9 +40,99 @@ public class RestControllerTest {
 
     private final ObjectMapper objectMapper= new ObjectMapper();
 
+    private Seller seller;
+    private int countofseller=0;
+
+    @Before
+    public void createSeller() throws Exception {
+
+        if(seller==null){
+            seller= new Seller("Selerko","seleris@seler.sk","Selerova 96");
+            //Create seller
+            String sellerid=mockMvc.perform(post("/api/seller")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(seller)))
+                    .andExpect(status().isCreated())
+                    .andReturn().getResponse().getContentAsString();
+            seller.setId(objectMapper.readValue(sellerid,Long.class));
+
+        }
+    }
+
+    @Test
+    public void testProductu() throws Exception {
+        // TODO: 9. 9. 2020 skurveny json zaokruluje double hodnoty skus zmenit value a dojebe sa to
+        Product product= new Product(seller.getId()
+                ,"Taska"
+                ,"Cervena taska vysivana"
+                ,1
+                ,50
+                , Timestamp.from(Instant.now()));
+
+                //Create product
+                String idofproduct=mockMvc.perform(post("/api/product")
+                                          .contentType(MediaType.APPLICATION_JSON)
+                                          .content(objectMapper.writeValueAsString(product)))
+                                          .andExpect(status().isOk())
+                                          .andReturn().getResponse().getContentAsString();
+
+                product.setId(objectMapper.readValue(idofproduct,Long.class));
+
+                //Get product by id
+                String productjson=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                                          .contentType(MediaType.APPLICATION_JSON))
+                                          .andExpect(status().isOk())
+                                          .andReturn().getResponse().getContentAsString();
+                Product productfromdb=objectMapper.readValue(productjson,Product.class);
+
+                Assert.assertEquals(product,productfromdb);
+
+                //Get all products
+                String listJsonProducts=mockMvc.perform(get("/api/products")
+                                               .contentType(MediaType.APPLICATION_JSON))
+                                               .andExpect(status().isOk())
+                                               .andReturn().getResponse().getContentAsString();
+                List<Product> listOfProducts= objectMapper.readValue(listJsonProducts, new TypeReference<List<Product>>() {
+                });
+
+                Assert.assertEquals(product,listOfProducts.get(0));
+
+                 //Update product
+                double updateValue=product.getValue()+1;
+                int updateCount=product.getCount()+10;
+                UpdateProductRequest request= new UpdateProductRequest(product.getName(),product.getInfo(),updateValue,updateCount);
+                mockMvc.perform(patch("/api/product/"+product.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk());
+
+                String updatedproductjson=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+                Product updatedproductfromdb=objectMapper.readValue(updatedproductjson,Product.class);
+
+                Assert.assertNotEquals(product.getCount(),updatedproductfromdb.getCount());
+                Assert.assertNotEquals(product.getValue(),updatedproductfromdb.getValue());
+
+
+                //Delete product by id
+                mockMvc.perform(delete("/api/product/"+product.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status()
+                        .isOk());
+
+                String getDeletedProduct=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn().getResponse().getContentAsString();
+
+
+    }
+
     @Test
     public void testCustomera() throws Exception{
-
+        countofseller++;
         Customer customer= new Customer("Jozko","picko@gmail.com","Alopova 54");
 
             //Add customer
@@ -83,16 +179,7 @@ public class RestControllerTest {
 
     @Test
     public void testSellera() throws Exception {
-
-        Seller seller= new Seller("Selerko","seleris@seler.sk","Selerova 96");
-                //Create seller
-                String sellerid=mockMvc.perform(post("/api/seller")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(seller)))
-                .andExpect(status().isCreated())
-                .andReturn().getResponse().getContentAsString();
-
-                seller.setId(objectMapper.readValue(sellerid,Long.class));
+        countofseller++;
 
                 //Get seller by id
                 String sellerjson=mockMvc.perform(get("/api/seller/"+seller.getId().toString())
@@ -116,11 +203,12 @@ public class RestControllerTest {
                                .contentType(MediaType.APPLICATION_JSON))
                                .andExpect(status().isOk())
                                .andReturn().getResponse().getContentAsString();
+
                 List<Seller> listSellers=objectMapper.readValue(jsonlistofsellers, new TypeReference<List<Seller>>() {
                 });
-
-                Assert.assertEquals(seller,listSellers.get(0));
-                Assert.assertEquals(1,listSellers.size());
+                Long idicko=seller.getId()-1;
+                Assert.assertEquals(seller,listSellers.get(idicko.intValue()));
+                Assert.assertEquals(seller.getId().intValue(),listSellers.size());
 
                 //Delete seller
                 mockMvc.perform(delete("/api/seller/"+seller.getId().toString())
