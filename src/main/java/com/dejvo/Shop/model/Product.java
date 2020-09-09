@@ -5,6 +5,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 public class Product {
@@ -93,5 +94,37 @@ public class Product {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return sellerId == product.sellerId &&
+                Double.compare(product.value, value) == 0 &&
+                count == product.count &&
+                id.equals(product.id) &&
+                name.equals(product.name) &&
+                info.equals(product.info) ;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sellerId, name, info, value, count);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", sellerId=" + sellerId +
+                ", name='" + name + '\'' +
+                ", info='" + info + '\'' +
+                ", value=" + value +
+                ", count=" + count +
+                ", datetime=" + datetime +
+                '}';
     }
 }
