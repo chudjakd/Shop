@@ -87,8 +87,14 @@ public class CustomerRepository {
         }
     }
 
-    public void deleteCustomer(Long id){
-        String deleteQuery= "DELETE FROM CUSTOMER WHERE ID="+id.toString();
-        jdbcTemplate.update(deleteQuery);
+    public int deleteCustomer(Long id){
+        try{
+            String deleteQuery= "DELETE FROM CUSTOMER WHERE ID="+id.toString();
+            jdbcTemplate.update(deleteQuery);
+            return 1;
+        }
+        catch (DataAccessException e){
+            return 0;
+        }
     }
 }
