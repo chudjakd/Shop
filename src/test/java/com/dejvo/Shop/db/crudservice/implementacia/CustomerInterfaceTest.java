@@ -2,7 +2,10 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 
 import com.dejvo.Shop.db.mapper.CustomerRowMapper;
 import com.dejvo.Shop.db.repository.CustomerRepository;
+import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,46 +24,31 @@ class CustomerInterfaceTest {
     @Autowired
     CustomerImplementacia customerImplementacia = new CustomerImplementacia(customerRepository);
 
-    @Test
-    public void customer(){
 
-    }
-
-    @Test
-    void readCustomerById2AndCompareName() {
-        assertEquals("Pulder", customerImplementacia.readCustomerById(1L).getName());
-    }
-    @Test
-    void readCustomerById5AndCompareName() {
-        assertEquals("Erdo", customerImplementacia.readCustomerById(6L).getName());
-    }
-
-    @Test
-    void readAllCustomers() {
-        assertEquals(2, customerImplementacia.readAllCustomers().size());
-    }
-
-    @Test
-    public void createCustomer() {
-        Customer customer = new Customer();
-        customer.setName("Erdo");
-        customer.setEmail("erdo@grag.sk");
-        customer.setAddress("Amperko 54");
+    @BeforeEach
+    public void createCustomerIn(){
+        Customer customer= new Customer(1L,"Jozko","jozko@gmail.com","Pokorova 85");
         customerImplementacia.createCustomer(customer);
     }
 
-//    @Test
-//    public void updateCustomerWithId2(){
-//        Customer customer = new Customer();
-//        customer.setId(1L);
-//        customer.setName("Pulder");
-//        customer.setEmail("puldo@grag.sk");
-//        customer.setAddress("Japerova 54");
-//
-//        assertEquals(0,customerImplementacia.updateCustomer(customer,2L));
-//    }
     @Test
-    public void deleteCustomerWithId5(){
-        customerImplementacia.deleteCustomer(5L);
+    public void customerTest(){
+        assertEquals("Jozko",customerImplementacia.readCustomerById(1L).getName()); //read name by id 1
+
+        Customer customer = new Customer();
+        customer.setName("Erdo");
+        customer.setEmail("erdo@grag.sk");              //create customer
+        customer.setAddress("Amperko 54");
+        customerImplementacia.createCustomer(customer);
+
+        assertEquals("Erdo",customerImplementacia.readCustomerById(2L).getName()); // read name by id 2 after successful create
+
+        assertEquals(2, customerImplementacia.readAllCustomers().size()); // read all customers
+
+        assertNull(customerImplementacia.readCustomerById(150L));          //read customer which doesnt exist
+
+        assertEquals(1,customerImplementacia.deleteCustomer(15L));  // delete customer which doesnt exist
+
     }
+
 }
