@@ -21,9 +21,9 @@ public class SellerImplementation implements SellerInterface {
     }
 
     @Override
-    public Seller createSeller(Seller seller) {
+    public Integer createSeller(Seller seller) {
         Integer key= sellerRepository.createSeller(seller);
-        return key!=0? sellerRepository.readSellerById(Integer.toUnsignedLong(key)):null;
+        return key!=0? key:null;
 
     }
 
