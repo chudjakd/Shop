@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class Customer {
@@ -60,5 +61,21 @@ public class Customer {
 
     public void setAddress(String adress) {
         this.address = adress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Customer customer = (Customer) o;
+        return id.equals(customer.id) &&
+                name.equals(customer.name) &&
+                email.equals(customer.email) &&
+                address.equals(customer.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, address);
     }
 }
