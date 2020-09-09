@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductInterface {
 
-    public int createProduct(Product product);
+    public Integer createProduct(Product product);
     @Nullable
     public Product readProductById(Long id);
     public List<Product> readAllProducts();

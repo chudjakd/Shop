@@ -19,7 +19,7 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
-    public int createProduct(Product product) {
+    public Integer createProduct(Product product) {
         return productRepository.createProduct(product);
     }
 
