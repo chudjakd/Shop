@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CustomerInterface {
 
-    public Customer createCustomer(Customer customer);
+    public Integer createCustomer(Customer customer);
     public Customer readCustomerById(Long id);
     public List<Customer> readAllCustomers();
     public int updateCustomer (UpdateCustomerRequest request, Long id);
