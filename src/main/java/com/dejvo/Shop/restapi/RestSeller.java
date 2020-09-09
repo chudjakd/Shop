@@ -36,9 +36,9 @@ public class RestSeller {
 
     @PostMapping("/seller")
     public ResponseEntity createSeller(@RequestBody Seller seller){
-        Seller seller1=sellerInterface.createSeller(seller);
-        if(seller1!=null){
-            return new ResponseEntity<>(seller1,HttpStatus.CREATED);
+        Integer sellerKey=sellerInterface.createSeller(seller);
+        if(sellerKey==1){
+            return new ResponseEntity<>(sellerKey,HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
