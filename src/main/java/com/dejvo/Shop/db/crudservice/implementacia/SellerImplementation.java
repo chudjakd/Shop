@@ -3,6 +3,7 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 import com.dejvo.Shop.db.crudservice.SellerInterface;
 import com.dejvo.Shop.db.repository.SellerRepository;
 
+import com.dejvo.Shop.db.request.UpdateSellerRequest;
 import com.dejvo.Shop.model.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,8 +38,8 @@ public class SellerImplementation implements SellerInterface {
     }
 
     @Override
-    public int updateSeller(Seller seller, Long id) {
-    return sellerRepository.updateSeller(seller,id);
+    public int updateSeller(UpdateSellerRequest request, Long id) {
+    return sellerRepository.updateSeller(request,id);
     }
 
     @Override
