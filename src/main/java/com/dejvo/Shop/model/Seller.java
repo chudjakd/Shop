@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -73,4 +74,21 @@ public class Seller {
 //    public void setProducts(Set<Product> products) {
 //        this.products = products;
 //    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Seller seller = (Seller) o;
+        return id.equals(seller.id) &&
+                name.equals(seller.name) &&
+                email.equals(seller.email) &&
+                address.equals(seller.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, address);
+    }
 }
