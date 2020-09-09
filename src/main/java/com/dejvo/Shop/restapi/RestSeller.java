@@ -1,6 +1,7 @@
 package com.dejvo.Shop.restapi;
 
 import com.dejvo.Shop.db.crudservice.SellerInterface;
+import com.dejvo.Shop.db.request.UpdateSellerRequest;
 import com.dejvo.Shop.model.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,13 +45,26 @@ public class RestSeller {
         }
     }
 
-    @PutMapping("/seller/{id}")
-    public ResponseEntity updateSeller(@RequestBody Seller seller, @PathVariable("id") Long id){
-        if(sellerInterface.updateSeller(seller,id)==1){
+    @PatchMapping("/seller/{id}")
+    public ResponseEntity updateSeller(@RequestBody UpdateSellerRequest request, @PathVariable("id") Long id){
+        if(sellerInterface.readSellerById(id)!=null){
+            sellerInterface.updateSeller(request,id);
             return new ResponseEntity<>("Update was succesful",HttpStatus.OK);
         }
+        else if(request.getAddress()==null||request.getEmail()==null||request.getName()==null){
+            return new ResponseEntity<>("You need insert full body.. something missing",HttpStatus.PRECONDITION_FAILED);
+        }
         else{
-            return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>("Hmm i hope that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+    @DeleteMapping("/seller/{id}")
+    public ResponseEntity deleteSellerById(@PathVariable Long id){
+        if(sellerInterface.readSellerById(id)!=null){
+            return new ResponseEntity<>("Delete was succesfull",HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>("The seller with that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
         }
     }
 
