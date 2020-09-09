@@ -40,9 +40,9 @@ public class RestCustomer {
 
     @PostMapping("/customer")
     public ResponseEntity createCustomerById(@RequestBody Customer customer){
-        Customer customeris=customerInterface.createCustomer(customer);
-        if(customeris!=null){
-            return new ResponseEntity<>(customeris,HttpStatus.CREATED);
+        Integer customerid=customerInterface.createCustomer(customer);
+        if(customerid!=null){
+            return new ResponseEntity<>(customerid,HttpStatus.CREATED);
         }
         else {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
@@ -50,8 +50,15 @@ public class RestCustomer {
     }
 
     @DeleteMapping("/customer/{id}")
-    public void deleteCustomerByID(@PathVariable("id") Long id){
-        customerInterface.deleteCustomer(id);
+    public ResponseEntity deleteCustomerByID(@PathVariable("id") Long id){
+        if(customerInterface.readCustomerById(id)==null){
+            return new ResponseEntity<>("Customer s tymto id neexistuje",HttpStatus.PRECONDITION_FAILED);
+        }
+        else {
+            customerInterface.deleteCustomer(id);
+            return new ResponseEntity<>("Delete uspesny",HttpStatus.OK);
+        }
+
     }
 
     @PutMapping("/customer/{id}")
