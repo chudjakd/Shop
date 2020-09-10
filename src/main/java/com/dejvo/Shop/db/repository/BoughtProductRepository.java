@@ -27,7 +27,7 @@ public class BoughtProductRepository {
     public Integer createBoughtProduct(BoughtProduct boughtProduct){
         try{
             String query="INSERT INTO BOUGHT_PRODUCT (customer_id,product_id,count,bought_at) VALUES (?,?,?,?)";
-            jdbcTemplate.update(query,boughtProductMapper);
+            jdbcTemplate.update(query,boughtProduct.getCustomerid(),boughtProduct.getProductid(),boughtProduct.getCount(),boughtProduct.getBoughtat());
             return 1;
         }
         catch (DataAccessException e){
