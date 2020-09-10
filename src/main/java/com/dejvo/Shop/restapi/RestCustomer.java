@@ -1,8 +1,10 @@
 package com.dejvo.Shop.restapi;
 
+import com.dejvo.Shop.db.crudservice.CustomerAccountInterface;
 import com.dejvo.Shop.db.crudservice.CustomerInterface;
 import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
+import com.dejvo.Shop.model.CustomerAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ public class RestCustomer {
 
     @Autowired
     CustomerInterface customerInterface;
+    @Autowired
+    CustomerAccountInterface customerAccountInterface;
 
 
     @GetMapping("/customers")
@@ -69,6 +73,11 @@ public class RestCustomer {
         else{
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
         }
+    }
+    @PostMapping("/customer/account")
+    public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
+        customerAccountInterface.createCustomerAccount(customerAccount);
+        return new ResponseEntity<>(null,HttpStatus.OK);
     }
 
 }
