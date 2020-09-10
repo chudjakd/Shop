@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ShoppingHelpMethods {
 
-    public boolean haveCustommerEnoughtMoney(double moneyofcustomer, int count, double valueofproduct){
-
-        return (moneyofcustomer-(valueofproduct*count))>=0? true:false;
+    public Double haveCustommerEnoughtMoney(double moneyofcustomer, int count, double valueofproduct){
+        Double newMoneyOfCustomer=(moneyofcustomer-(valueofproduct*count));
+        return newMoneyOfCustomer>=0? (moneyofcustomer-(valueofproduct*count)):null;
     }
 }
