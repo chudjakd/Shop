@@ -76,8 +76,8 @@ public class RestCustomer {
     }
     @PostMapping("/customer/account")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
-        customerAccountInterface.createCustomerAccount(customerAccount);
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        Integer key=customerAccountInterface.createCustomerAccount(customerAccount);
+        return new ResponseEntity<>(key,HttpStatus.OK);
     }
 
 }
