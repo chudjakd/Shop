@@ -8,10 +8,11 @@ import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
 import com.dejvo.Shop.shoppinghelpmethods.ShoppingHelpMethods;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-
+@Component
 public class ShoppingImplementacia implements ShoppingInterface {
 
     ProductInterface productInterface;
@@ -20,13 +21,20 @@ public class ShoppingImplementacia implements ShoppingInterface {
     CustomerAccountImplementacia customerAccountImplementacia;
     BoughtProductInterface boughtProductInterface;
 
+    public ShoppingImplementacia(ProductInterface productInterface, CustomerInterface customerInterface, ShoppingHelpMethods shoppingHelpMethods, CustomerAccountImplementacia customerAccountImplementacia, BoughtProductInterface boughtProductInterface) {
+        this.productInterface = productInterface;
+        this.customerInterface = customerInterface;
+        this.shoppingHelpMethods = shoppingHelpMethods;
+        this.customerAccountImplementacia = customerAccountImplementacia;
+        this.boughtProductInterface = boughtProductInterface;
+    }
 
     /*
-    Nie je to moc zrozumitelne tak radsej komentik, 1. if nam zistuje ci dany customer a product ktory pride v requeste existuju
-    2. if nam zistuje ci customer ktory chce nakupit urcity pocet produktov ma dostatocny pocet penazi
-    3. if nam zistuje ci je pocet produktov na sklade vacsi alebo rovny tomu ktory prisiel z requestu
-    4. if nam zistuje ci uz nahodou customer nema produkt ktory chce kupit ak ma tak len pripocitame k tomu existujucemu poctu ten pocet ktory chce nakupit
-     */
+        Nie je to moc zrozumitelne tak radsej komentik, 1. if nam zistuje ci dany customer a product ktory pride v requeste existuju
+        2. if nam zistuje ci customer ktory chce nakupit urcity pocet produktov ma dostatocny pocet penazi
+        3. if nam zistuje ci je pocet produktov na sklade vacsi alebo rovny tomu ktory prisiel z requestu
+        4. if nam zistuje ci uz nahodou customer nema produkt ktory chce kupit ak ma tak len pripocitame k tomu existujucemu poctu ten pocet ktory chce nakupit
+         */
     @Override
     public BuyProductResponse buyProduct(BuyProductRequest buyProductRequest) {
 
