@@ -6,6 +6,7 @@ import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -33,12 +34,12 @@ public class CustomerAccountImplementacia implements CustomerAccountInterface {
     }
 
     @Override
-    public Integer updateMoneyOfCustomerAccount(double money, int id) {
+    public Integer updateMoneyOfCustomerAccount(BigDecimal money, int id) {
         return customerAccountRepository.updateCustomerAccountMoney(money,id);
     }
 
     @Override
-    public double getMoneyByCustomerId(int idofcustomer) {
+    public BigDecimal getMoneyByCustomerId(int idofcustomer) {
         return customerAccountRepository.getMoneyByCustomerId(idofcustomer);
     }
 }

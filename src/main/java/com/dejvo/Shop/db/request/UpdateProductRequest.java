@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 
 public class UpdateProductRequest {
     @NonNull
@@ -11,11 +13,11 @@ public class UpdateProductRequest {
     @NonNull
     private String info;
     @NonNull
-    private double value;
+    private BigDecimal value;
     @NonNull
     private int count;
 
-    public UpdateProductRequest(@NonNull String name, @NonNull String info, double value, int count) {
+    public UpdateProductRequest(@NonNull String name, @NonNull String info, BigDecimal value, int count) {
         this.name = name;
         this.info = info;
         this.value = value;
@@ -32,7 +34,7 @@ public class UpdateProductRequest {
         return info;
     }
     @NonNull
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 

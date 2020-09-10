@@ -4,6 +4,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -21,16 +22,18 @@ public class Product {
     @NonNull
     public String info;
     @NonNull
-    public double value;
+    @Column(name = "value",precision = 8,scale = 2)
+    public BigDecimal value;
     @NonNull
     public int count;
     @Nullable
+    @Column(name = "created_at")
     public Timestamp datetime;
 
     public Product() {
     }
 
-    public Product( long sellerId, @NonNull String name, @NonNull String info, double value, int count, @NonNull Timestamp datetime) {
+    public Product( long sellerId, @NonNull String name, @NonNull String info, BigDecimal value, int count, @NonNull Timestamp datetime) {
         this.sellerId = sellerId;
         this.name = name;
         this.info = info;
@@ -80,11 +83,11 @@ public class Product {
         this.info = info;
     }
 
-    public double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -96,19 +99,17 @@ public class Product {
         this.count = count;
     }
 
-
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return id == product.id &&
                 sellerId == product.sellerId &&
-                Double.compare(product.value, value) == 0 &&
                 count == product.count &&
                 name.equals(product.name) &&
                 info.equals(product.info) &&
+                value.equals(product.value) &&
                 Objects.equals(datetime, product.datetime);
     }
 

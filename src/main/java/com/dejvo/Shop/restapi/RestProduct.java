@@ -34,7 +34,7 @@ public class RestProduct {
     public ResponseEntity createProduct(@RequestBody Product product){
         Integer key=productInterface.createProduct(product);
         if(key!=null){
-            return new ResponseEntity<>(key,HttpStatus.OK);
+            return new ResponseEntity<>(key,HttpStatus.CREATED);
         }
         else{
             return new ResponseEntity<>("Hmm something is bad",HttpStatus.PRECONDITION_FAILED);

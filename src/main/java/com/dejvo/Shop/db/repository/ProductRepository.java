@@ -42,7 +42,7 @@ public class ProductRepository {
                 ps.setLong(1,product.getSellerId());
                 ps.setString(2,product.getName());
                 ps.setString(3,product.getInfo());
-                ps.setDouble(4,product.getValue());
+                ps.setBigDecimal(4,product.getValue());
                 ps.setInt(5,product.getCount());
                 if(product.getDatetime()==null){
                     ps.setTimestamp(6, Timestamp.from(Instant.now()));

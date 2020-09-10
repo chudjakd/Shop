@@ -1,6 +1,8 @@
 package com.dejvo.Shop.rest;
 
+import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
+import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import com.dejvo.Shop.model.Product;
@@ -23,6 +25,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
@@ -66,7 +69,7 @@ public class RestControllerTest {
         Product product= new Product(seller.getId()
                 ,"Taska"
                 ,"Cervena taska vysivana"
-                ,1
+                ,BigDecimal.valueOf(1.25)
                 ,50
                 , Timestamp.from(Instant.now()));
 
@@ -74,7 +77,7 @@ public class RestControllerTest {
                 String idofproduct=mockMvc.perform(post("/api/product")
                                           .contentType(MediaType.APPLICATION_JSON)
                                           .content(objectMapper.writeValueAsString(product)))
-                                          .andExpect(status().isOk())
+                                          .andExpect(status().isCreated())
                                           .andReturn().getResponse().getContentAsString();
 
                 product.setId(objectMapper.readValue(idofproduct,Integer.class));
@@ -99,7 +102,7 @@ public class RestControllerTest {
                 Assert.assertEquals(product,listOfProducts.get(0));
 
                  //Update product
-                double updateValue=product.getValue()+1;
+                BigDecimal updateValue=product.getValue();
                 int updateCount=product.getCount()+10;
                 UpdateProductRequest request= new UpdateProductRequest(product.getName(),product.getInfo(),updateValue,updateCount);
                 mockMvc.perform(patch("/api/product/"+product.getId())
@@ -278,6 +281,38 @@ public class RestControllerTest {
                         .andReturn().getResponse().getContentAsString();
 
                 CustomerAccount customerAccountfromDB=objectMapper.readValue(customeraccountJson,CustomerAccount.class);
+
+                //Testovanie RestShoppingu odtialto
+
+        Product product= new Product(1,"Taska","Taska rapotaska",BigDecimal.valueOf(24.99),11,Timestamp.from(Instant.now()));
+
+        mockMvc.perform(post("/api/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(product)))
+                .andExpect(status().isCreated());
+
+        BuyProductRequest buyProductRequest= new BuyProductRequest(1,1,3);
+
+                String responseJson=mockMvc.perform(post("/api/shopping")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buyProductRequest)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+//        BuyProductResponse buyProductResponse=objectMapper.readValue(responseJson,BuyProductResponse.class);
+        System.out.println(responseJson);
+        //Skuska metody ked neexistuje product
+        BuyProductRequest buyProductRequest2= new BuyProductRequest(2,1,3);
+
+        String responseJsonFailed=mockMvc.perform(post("/api/shopping")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buyProductRequest2)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn().getResponse().getContentAsString();
+
+//        BuyProductResponse buyProductResponse2=objectMapper.readValue(responseJsonFailed,BuyProductResponse.class);
+        System.out.println(responseJsonFailed);
+
     }
 
 

@@ -4,12 +4,14 @@ import com.dejvo.Shop.db.crudservice.*;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
+import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.shoppinghelpmethods.ShoppingHelpMethods;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-@Component
+@Service
 public class ShoppingImplementacia implements ShoppingInterface {
 
     ProductInterface productInterface;
@@ -39,11 +41,13 @@ public class ShoppingImplementacia implements ShoppingInterface {
         Integer productid=buyProductRequest.getProductid();
         Integer countofbuyingproduct=buyProductRequest.getCount();
         // 1 if
-        if( customerAccountInterface.getCustomerByIdOfCustomer(productid)!=null  &&  customerAccountInterface.getCustomerByIdOfCustomer(customerid)!=null ) {
+        if( productInterface.readProductById(productid)!=null  &&  customerAccountInterface.getCustomerByIdOfCustomer(customerid)!=null ) {
             //2 if
-            Double newMoneyOfCustomer=shoppingHelpMethods.haveCustommerEnoughtMoney(customerAccountInterface.getMoneyByCustomerId(customerid)
+            Product product=productInterface.readProductById(productid);
+            BigDecimal productvalue=product.getValue();
+            BigDecimal newMoneyOfCustomer=shoppingHelpMethods.haveCustommerEnoughtMoney(customerAccountInterface.getMoneyByCustomerId(customerid)
                                                                                     ,buyProductRequest.getCount()
-                                                                                    ,productInterface.readProductById(productid).getValue());
+                                                                                    ,productvalue);
             if(newMoneyOfCustomer!=null)
             {
 

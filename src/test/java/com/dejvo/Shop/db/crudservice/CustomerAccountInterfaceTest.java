@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -19,7 +21,7 @@ class CustomerAccountInterfaceTest {
 
     @BeforeEach
     public void createCustomerAccounta(){
-        CustomerAccount customerAccount= new CustomerAccount(6,250.5);
+        CustomerAccount customerAccount= new CustomerAccount(6,BigDecimal.valueOf(250.5));
         customerAccountInterface.createCustomerAccount(customerAccount);
     }
 
@@ -32,22 +34,22 @@ class CustomerAccountInterfaceTest {
         CustomerAccount customerAccount= new CustomerAccount();
         customerAccount.setId(2);
         customerAccount.setCustomerid(5);
-        customerAccount.setMoney(351.55);
+        customerAccount.setMoney(BigDecimal.valueOf(351.55));
         //Test Create
         Assert.assertNotNull( customerAccountInterface.createCustomerAccount(customerAccount));
         //Test get all
         Assert.assertEquals(2,customerAccountInterface.getAllCustomerAccounts().size());
-        Assert.assertEquals(250.5,customerAccountInterface.getAllCustomerAccounts().get(0).getMoney(),0);
-        Assert.assertEquals(351.55,customerAccountInterface.getAllCustomerAccounts().get(1).getMoney(),0);
+        Assert.assertEquals(BigDecimal.valueOf(250.5),customerAccountInterface.getAllCustomerAccounts().get(0).getMoney());
+        Assert.assertEquals(BigDecimal.valueOf(351.55),customerAccountInterface.getAllCustomerAccounts().get(1).getMoney());
 
         //Test update
-        int pica=customerAccountInterface.updateMoneyOfCustomerAccount(598.2,5);
+        int pica=customerAccountInterface.updateMoneyOfCustomerAccount(BigDecimal.valueOf(598.2),5);
         Assert.assertEquals(1,pica);
 
-        Assert.assertEquals(598.2,customerAccountInterface.getCustomerByIdOfCustomer(5).getMoney(),0);
+        Assert.assertEquals(BigDecimal.valueOf(598.2),customerAccountInterface.getCustomerByIdOfCustomer(5).getMoney());
 
-        Assert.assertEquals(598.2,customerAccountInterface.getMoneyByCustomerId(5),0);
-        Assert.assertEquals(-1,customerAccountInterface.getMoneyByCustomerId(10),0);
+        Assert.assertEquals(BigDecimal.valueOf(598.2),customerAccountInterface.getMoneyByCustomerId(5));
+        Assert.assertEquals(BigDecimal.valueOf(-1),customerAccountInterface.getMoneyByCustomerId(10));
 
 
 

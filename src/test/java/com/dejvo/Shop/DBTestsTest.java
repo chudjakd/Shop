@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -74,7 +75,7 @@ class DBTestsTest {
         product.setCount(150);
         product.setInfo("Hmm neviem co to je");
         product.setName("Idk");
-        product.setValue(12);
+        product.setValue(BigDecimal.valueOf(12));
         product.setDatetime(Timestamp.from(Instant.now()));
 
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -84,7 +85,7 @@ class DBTestsTest {
                 ps.setLong(1,product.getSellerId());
                 ps.setString(2,product.getName());
                 ps.setString(3,product.getInfo());
-                ps.setDouble(4,product.getValue());
+                ps.setBigDecimal(4,product.getValue());
                 ps.setInt(5,product.getCount());
                 ps.setTimestamp(6,product.getDatetime());
                 return ps;

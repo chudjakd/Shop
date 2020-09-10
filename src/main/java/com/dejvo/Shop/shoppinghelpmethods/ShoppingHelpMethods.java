@@ -2,11 +2,13 @@ package com.dejvo.Shop.shoppinghelpmethods;
 
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class ShoppingHelpMethods {
 
-    public Double haveCustommerEnoughtMoney(double moneyofcustomer, int count, double valueofproduct){
-        Double newMoneyOfCustomer=(moneyofcustomer-(valueofproduct*count));
-        return newMoneyOfCustomer>=0? (moneyofcustomer-(valueofproduct*count)):null;
+    public BigDecimal haveCustommerEnoughtMoney(BigDecimal moneyofcustomer, int count, BigDecimal valueofproduct){
+        BigDecimal newMoneyOfCustomer=(moneyofcustomer.subtract(valueofproduct.multiply(BigDecimal.valueOf(count))));
+        return newMoneyOfCustomer.compareTo(BigDecimal.ZERO)<=0? newMoneyOfCustomer:null;
     }
 }
