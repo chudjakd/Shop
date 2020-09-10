@@ -37,7 +37,7 @@ public class BoughtProductRepository {
 
     public BoughtProduct selectBoughtProductByCustomerIdAndProductId(int customerid,int productid){
         try{
-            String query="SELECT * FROM BOUGHT_PRODUCT WHERE CUSTOMER_ID=?"+customerid+" AND PRODUCT_ID=?"+productid;
+            String query="SELECT * FROM BOUGHT_PRODUCT WHERE CUSTOMER_ID="+customerid+" AND PRODUCT_ID="+productid;
             return jdbcTemplate.queryForObject(query,boughtProductMapper);
         }
         catch (DataAccessException e){
