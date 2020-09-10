@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 @Component
 public class BoughtProductRepository {
@@ -65,6 +66,17 @@ public class BoughtProductRepository {
         }
         }
         else{
+            return null;
+        }
+    }
+
+    public List<BoughtProduct> getAllProductByCustomerId(int customerid){
+        try{
+            String query="SELECT * FROM BOUGHT_PRODUCT WHERE CUSTOMER_ID="+customerid;
+            List<BoughtProduct> allboughtproduct=jdbcTemplate.query(query,boughtProductMapper);
+            return allboughtproduct;
+        }
+        catch (DataAccessException e){
             return null;
         }
     }
