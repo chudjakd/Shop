@@ -2,6 +2,7 @@ package com.dejvo.Shop.rest;
 
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Customer;
+import com.dejvo.Shop.model.CustomerAccount;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -174,6 +175,18 @@ public class RestControllerTest {
         mockMvc.perform(delete("/api/customer/"+deleteidcustomerwhichdoesntexist)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isPreconditionFailed());
+
+        CustomerAccount customerAccount= new CustomerAccount(5,536.25);
+
+                String keyfromcreatejson=mockMvc.perform(post("/api/customer/account")
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(objectMapper.writeValueAsString(customerAccount)))
+                                            .andExpect(status().isOk())
+                                            .andReturn().getResponse().getContentAsString();
+                Integer keyfromcreatecustomeraccout=objectMapper.readValue(keyfromcreatejson,Integer.class);
+
+                Assert.assertEquals((Integer) 1 ,keyfromcreatecustomeraccout);
+
 
     }
 
