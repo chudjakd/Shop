@@ -106,6 +106,14 @@ public class ShoppingImplementaciaTest {
 
         //Kontrola penazi customera a taktiez poctu produktov na sklade
 
+        assertEquals(0,productInterface.readProductById(2).getCount());
+        System.out.println("Ocakavame ze bude mat menej penazi ako 523.63 penize: "+customerAccountInterface.getCustomerByIdOfCustomer(1).getMoney());
+
+        BuyProductRequest buyProductRequest8= new BuyProductRequest(2,1,5);
+        BuyProductResponse response8 =shoppingInterface.buyProduct(buyProductRequest8);
+        assertFalse(response8.isSuccess());
+        System.out.println("Response8 ocakavame ze nie je dostatok produktov: "+response8.getErrormessage());
+
 
     }
 }
