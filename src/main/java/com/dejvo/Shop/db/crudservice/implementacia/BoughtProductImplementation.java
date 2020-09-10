@@ -5,6 +5,8 @@ import com.dejvo.Shop.db.repository.BoughtProductRepository;
 import com.dejvo.Shop.model.BoughtProduct;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BoughtProductImplementation implements BoughtProductInterface {
 
@@ -27,5 +29,10 @@ public class BoughtProductImplementation implements BoughtProductInterface {
     @Override
     public Integer updateCountOfBoughtProduct(BoughtProduct boughtProduct, int count) {
         return boughtProductRepository.updateValueOfBoughtProduct(boughtProduct,count);
+    }
+
+    @Override
+    public List<BoughtProduct> getAllBoughtProductsByCustomerId(int customerid) {
+        return boughtProductRepository.getAllProductByCustomerId(customerid);
     }
 }
