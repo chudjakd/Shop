@@ -19,13 +19,12 @@ public class CustomerAccountImplementacia implements CustomerAccountInterface {
 
     @Override
     public Integer createCustomerAccount(CustomerAccount customerAccount) {
-        Integer key=customerAccountRepository.createCustomerAccount(customerAccount);
-        return key;
+        return customerAccountRepository.createCustomerAccount(customerAccount);
     }
 
     @Override
-    public CustomerAccount getCustomerById(int id) {
-       return customerAccountRepository.getCustomerAccountById(id);
+    public CustomerAccount getCustomerByIdOfCustomer(int id) {
+       return customerAccountRepository.getCustomerAccountByIdOfCustomer(id);
     }
 
     @Override
@@ -36,5 +35,10 @@ public class CustomerAccountImplementacia implements CustomerAccountInterface {
     @Override
     public Integer updateMoneyOfCustomerAccount(double money, int id) {
         return customerAccountRepository.updateCustomerAccountMoney(money,id);
+    }
+
+    @Override
+    public double getMoneyByCustomerId(int idofcustomer) {
+        return customerAccountRepository.getMoneyByCustomerId(idofcustomer);
     }
 }
