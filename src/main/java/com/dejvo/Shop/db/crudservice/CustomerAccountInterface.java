@@ -10,7 +10,8 @@ import java.util.List;
 public interface CustomerAccountInterface {
 
     public Integer createCustomerAccount(CustomerAccount customerAccount);
-    public CustomerAccount getCustomerById(int id);
+    public CustomerAccount getCustomerByIdOfCustomer(int idofcustomer);
     public List<CustomerAccount> getAllCustomerAccounts();
-    public Integer updateMoneyOfCustomerAccount(double money, int id);
+    public Integer updateMoneyOfCustomerAccount(double money, int idofcustomer);
+    public double getMoneyByCustomerId(int idofcustomer);
 }
