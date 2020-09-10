@@ -13,7 +13,7 @@ public class BoughtProductMapper implements RowMapper<BoughtProduct> {
         BoughtProduct boughtProduct=new BoughtProduct();
         boughtProduct.setCustomerid(resultSet.getInt("customer_id"));
         boughtProduct.setProductid(resultSet.getInt("product_id"));
-        boughtProduct.setCount(resultSet.getInt("value"));
+        boughtProduct.setCount(resultSet.getInt("count"));
         boughtProduct.setBoughtat(resultSet.getTimestamp("bought_at"));
         return boughtProduct;
     }
