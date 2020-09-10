@@ -33,7 +33,7 @@ public class ProductRepository {
 
     public Integer createProduct(Product product){
 
-        String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,datetime) VALUES (?,?,?,?,?,?)";
+        String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
         KeyHolder keyHolder=new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
