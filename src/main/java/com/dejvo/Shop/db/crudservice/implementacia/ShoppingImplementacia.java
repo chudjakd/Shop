@@ -1,9 +1,6 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
-import com.dejvo.Shop.db.crudservice.BoughtProductInterface;
-import com.dejvo.Shop.db.crudservice.CustomerInterface;
-import com.dejvo.Shop.db.crudservice.ProductInterface;
-import com.dejvo.Shop.db.crudservice.ShoppingInterface;
+import com.dejvo.Shop.db.crudservice.*;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
@@ -18,14 +15,14 @@ public class ShoppingImplementacia implements ShoppingInterface {
     ProductInterface productInterface;
     CustomerInterface customerInterface;
     ShoppingHelpMethods shoppingHelpMethods;
-    CustomerAccountImplementacia customerAccountImplementacia;
+    CustomerAccountInterface customerAccountInterface;
     BoughtProductInterface boughtProductInterface;
 
     public ShoppingImplementacia(ProductInterface productInterface, CustomerInterface customerInterface, ShoppingHelpMethods shoppingHelpMethods, CustomerAccountImplementacia customerAccountImplementacia, BoughtProductInterface boughtProductInterface) {
         this.productInterface = productInterface;
         this.customerInterface = customerInterface;
         this.shoppingHelpMethods = shoppingHelpMethods;
-        this.customerAccountImplementacia = customerAccountImplementacia;
+        this.customerAccountInterface = customerAccountImplementacia;
         this.boughtProductInterface = boughtProductInterface;
     }
 
@@ -42,9 +39,9 @@ public class ShoppingImplementacia implements ShoppingInterface {
         Integer productid=buyProductRequest.getProductid();
         Integer countofbuyingproduct=buyProductRequest.getCount();
         // 1 if
-        if( productInterface.readProductById(productid)!=null  &&  customerInterface.readCustomerById(customerid.longValue())!=null ) {
+        if( customerAccountInterface.getCustomerByIdOfCustomer(productid)!=null  &&  customerAccountInterface.getCustomerByIdOfCustomer(customerid)!=null ) {
             //2 if
-            Double newMoneyOfCustomer=shoppingHelpMethods.haveCustommerEnoughtMoney(customerAccountImplementacia.getMoneyByCustomerId(customerid)
+            Double newMoneyOfCustomer=shoppingHelpMethods.haveCustommerEnoughtMoney(customerAccountInterface.getMoneyByCustomerId(customerid)
                                                                                     ,buyProductRequest.getCount()
                                                                                     ,productInterface.readProductById(productid).getValue());
             if(newMoneyOfCustomer!=null)
@@ -56,7 +53,7 @@ public class ShoppingImplementacia implements ShoppingInterface {
 
                     Integer newCountOfProduct=countofproductatwarehouse-countofbuyingproduct;   //Odpocitanie poctu ktory customer nakupil od celkoveho poctu produktu na sklade
                     productInterface.updateCountOfProduct(productid,newCountOfProduct);         // Update poctu produktov na sklade kedze doslo k uspesnemu nakupu
-                    customerAccountImplementacia.updateMoneyOfCustomerAccount(newMoneyOfCustomer,customerid);   //Update penazi customera ktory uspesne nakupil
+                    customerAccountInterface.updateMoneyOfCustomerAccount(newMoneyOfCustomer,customerid);   //Update penazi customera ktory uspesne nakupil
                     BoughtProduct boughtProductFromDatabase=boughtProductInterface.getBoughtProductByCustomerIdAndProductId(customerid,productid);
                     // 4. if
                     if(boughtProductFromDatabase!=null){
