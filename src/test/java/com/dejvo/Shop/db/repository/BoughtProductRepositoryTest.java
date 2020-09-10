@@ -21,6 +21,10 @@ public class BoughtProductRepositoryTest {
     @Test
     public void testovanieBoughtProductu(){
         BoughtProduct boughtProduct= new BoughtProduct(1,1,10, Timestamp.from(Instant.now()));
-        assertNotNull( boughtProductRepository.createBoughtProduct(boughtProduct));
+
+        assertEquals(1,boughtProductRepository.oldCreateBoughtProduct(boughtProduct));
+        assertEquals(1,boughtProductRepository.getAllProductByCustomerId(1).size());
+
+        assertNotNull(boughtProductRepository.selectBoughtProductByCustomerIdAndProductId(1,1));
     }
 }
