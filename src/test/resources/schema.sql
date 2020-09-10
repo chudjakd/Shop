@@ -26,7 +26,7 @@ CREATE TABLE product (
   count int(11) NOT NULL
 );
 
-DROP TABLE IF EXISTS product;
+DROP TABLE IF EXISTS customer_account;
 CREATE TABLE customer_account (
   id int(11) NOT NULL AUTO_INCREMENT,
   customer_id int(11) NOT NULL,
