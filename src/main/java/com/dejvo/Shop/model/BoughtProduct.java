@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -14,6 +16,7 @@ public class BoughtProduct {
     private int customerid;
     @Column(name = "product_id")
     private int productid;
+    @Column(name = "count")
     private int count;
     @Column(name = "bought_at")
     private Timestamp boughtat;
@@ -25,7 +28,7 @@ public class BoughtProduct {
         this.customerid = customerid;
         this.productid = productid;
         this.count = count;
-        this.boughtat = boughtat;
+        this.boughtat = Timestamp.from(Instant.now());
     }
 
     public int getCustomerid() {
