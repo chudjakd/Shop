@@ -235,4 +235,50 @@ public class RestControllerTest {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Test
+    public void testCustomerAccount() throws Exception {
+        Customer customer= new Customer("Jozko","Stasak","stasacik@gmail.com");
+        CustomerAccount customerAccount= new CustomerAccount(1,256.5);
+
+        mockMvc.perform(post("/api/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isCreated());
+
+                String idofcustomer=mockMvc.perform(post("/api/customer-account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customerAccount)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+
+                        String customeraccountJson=mockMvc.perform(get("/api/customer-account/"+idofcustomer)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse().getContentAsString();
+
+                CustomerAccount customerAccountfromDB=objectMapper.readValue(customeraccountJson,CustomerAccount.class);
+    }
+
+
 }
