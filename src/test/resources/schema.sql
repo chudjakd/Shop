@@ -32,3 +32,12 @@ CREATE TABLE customer_account (
   customer_id int(11) NOT NULL,
   money double NOT NULL
   );
+
+DROP TABLE IF EXISTS bought_product;
+CREATE TABLE bought_product (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  customer_id int(11) NOT NULL,
+  product_id int(11) NOT NULL,
+  count int(11) NOT NULL,
+  bought_at datetime NOT NULL
+  );
