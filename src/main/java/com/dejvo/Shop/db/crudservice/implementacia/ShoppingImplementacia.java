@@ -44,18 +44,19 @@ public class ShoppingImplementacia implements ShoppingInterface {
         // 1 if
         if( productInterface.readProductById(productid)!=null  &&  customerInterface.readCustomerById(customerid.longValue())!=null ) {
             //2 if
-            if(shoppingHelpMethods.haveCustommerEnoughtMoney
-                    (customerAccountImplementacia.getMoneyByCustomerId(customerid)
-                    ,buyProductRequest.getCount()
-                    ,productInterface.readProductById(productid).getValue()))
+            Double newMoneyOfCustomer=shoppingHelpMethods.haveCustommerEnoughtMoney(customerAccountImplementacia.getMoneyByCustomerId(customerid)
+                                                                                    ,buyProductRequest.getCount()
+                                                                                    ,productInterface.readProductById(productid).getValue());
+            if(newMoneyOfCustomer!=null)
             {
 
                 Integer countofproductatwarehouse=productInterface.readProductById(productid).getCount();
                 // 3. if
-                if(countofproductatwarehouse>countofbuyingproduct){
+                if(countofproductatwarehouse>=countofbuyingproduct){
 
-                    Integer newCountOfProduct=countofproductatwarehouse-countofbuyingproduct;
-                    productInterface.updateCountOfProduct(productid,newCountOfProduct);
+                    Integer newCountOfProduct=countofproductatwarehouse-countofbuyingproduct;   //Odpocitanie poctu ktory customer nakupil od celkoveho poctu produktu na sklade
+                    productInterface.updateCountOfProduct(productid,newCountOfProduct);         // Update poctu produktov na sklade kedze doslo k uspesnemu nakupu
+                    customerAccountImplementacia.updateMoneyOfCustomerAccount(newMoneyOfCustomer,customerid);   //Update penazi customera ktory uspesne nakupil
                     BoughtProduct boughtProductFromDatabase=boughtProductInterface.getBoughtProductByCustomerIdAndProductId(customerid,productid);
                     // 4. if
                     if(boughtProductFromDatabase!=null){
