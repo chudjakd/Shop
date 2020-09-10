@@ -77,10 +77,10 @@ public class RestControllerTest {
                                           .andExpect(status().isOk())
                                           .andReturn().getResponse().getContentAsString();
 
-                product.setId(objectMapper.readValue(idofproduct,Long.class));
+                product.setId(objectMapper.readValue(idofproduct,Integer.class));
 
                 //Get product by id
-                String productjson=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                String productjson=mockMvc.perform(get("/api/product/"+product.getId())
                                           .contentType(MediaType.APPLICATION_JSON))
                                           .andExpect(status().isOk())
                                           .andReturn().getResponse().getContentAsString();
@@ -107,7 +107,7 @@ public class RestControllerTest {
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());
 
-                String updatedproductjson=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                String updatedproductjson=mockMvc.perform(get("/api/product/"+product.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -123,7 +123,7 @@ public class RestControllerTest {
                         .andExpect(status()
                         .isOk());
 
-                String getDeletedProduct=mockMvc.perform(get("/api/product/"+product.getId().toString())
+                String getDeletedProduct=mockMvc.perform(get("/api/product/"+product.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isPreconditionFailed())
                 .andReturn().getResponse().getContentAsString();
