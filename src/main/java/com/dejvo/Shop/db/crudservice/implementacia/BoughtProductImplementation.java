@@ -25,7 +25,7 @@ public class BoughtProductImplementation implements BoughtProductInterface {
     }
 
     @Override
-    public Integer updateCountOfBoughtProduct(BoughtProduct boughtProduct) {
-        return boughtProductRepository.updateValueOfBoughtProduct(boughtProduct);
+    public Integer updateCountOfBoughtProduct(BoughtProduct boughtProduct, int count) {
+        return boughtProductRepository.updateValueOfBoughtProduct(boughtProduct,count);
     }
 }

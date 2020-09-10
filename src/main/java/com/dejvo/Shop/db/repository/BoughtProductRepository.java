@@ -44,7 +44,7 @@ public class BoughtProductRepository {
             return null;
         }
     }
-    public Integer updateValueOfBoughtProduct(BoughtProduct boughtProduct){
+    public Integer updateValueOfBoughtProduct(BoughtProduct boughtProduct, int count){
         if(boughtProduct!=null){
         try{
             String query="UPDATE BOUGHT_PRODUCT SET COUNT=? WHERE CUSTOMER_ID=? AND PRODUCT_ID=?";
@@ -52,7 +52,7 @@ public class BoughtProductRepository {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                     PreparedStatement ps= connection.prepareStatement(query);
-                    ps.setInt(1,boughtProduct.getCount());
+                    ps.setInt(1,count);
                     ps.setInt(2,boughtProduct.getCustomerid());
                     ps.setInt(3,boughtProduct.getProductid());
                     return ps;
