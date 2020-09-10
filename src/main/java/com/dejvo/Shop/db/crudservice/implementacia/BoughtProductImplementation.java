@@ -1,9 +1,8 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
+import com.dejvo.Shop.db.crudservice.BoughtProductInterface;
 import com.dejvo.Shop.db.repository.BoughtProductRepository;
 import com.dejvo.Shop.model.BoughtProduct;
-import org.graalvm.compiler.serviceprovider.ServiceProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
