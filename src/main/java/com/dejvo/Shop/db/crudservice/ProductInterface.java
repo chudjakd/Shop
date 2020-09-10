@@ -15,5 +15,6 @@ public interface ProductInterface {
     public List<Product> readAllProducts();
     public int updateProduct (UpdateProductRequest request, Long id);
     public int deleteProduct (Long id);
+    public Integer updateCountOfProduct(int idofproduct, int newcount );
 
 }

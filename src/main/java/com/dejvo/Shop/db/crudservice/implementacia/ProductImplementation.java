@@ -42,4 +42,9 @@ public class ProductImplementation implements ProductInterface {
     public int deleteProduct(Long id) {
     return productRepository.deleteProduct(id);
     }
+
+    @Override
+    public Integer updateCountOfProduct(int idofproduct, int newcount) {
+        return productRepository.updateProductCount(idofproduct, newcount);
+    }
 }
