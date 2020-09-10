@@ -108,4 +108,16 @@ public class ProductRepository {
         }
     }
 
+    public Integer updateProductCount(int productid, int newcount){
+        try{
+            String url="UPDATE PRODUCT SET COUNT=? WHERE ID=?";
+            jdbcTemplate.update(url,newcount,productid);
+            return 1;
+        }
+        catch (DataAccessException e){
+            return null;
+        }
+
+    }
+
 }
