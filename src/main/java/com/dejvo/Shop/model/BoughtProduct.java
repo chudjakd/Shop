@@ -1,8 +1,6 @@
 package com.dejvo.Shop.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -12,6 +10,9 @@ import java.time.LocalDateTime;
 @Table(name = "bought_product")
 public class BoughtProduct {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(name = "customer_id")
     private int customerid;
     @Column(name = "product_id")
