@@ -62,9 +62,9 @@ public class ProductRepository {
         }
     }
 
-    public Product readProductById(Long id) {
+    public Product readProductById(int id) {
         try{
-            String query="SELECT * FROM PRODUCT WHERE ID="+id.toString();
+            String query="SELECT * FROM PRODUCT WHERE ID="+id;
             return jdbcTemplate.queryForObject(query,productRowMapper);
 
         }catch (EmptyResultDataAccessException e){
@@ -81,7 +81,7 @@ public class ProductRepository {
 
     }
 
-    public int updateProduct(Long id, UpdateProductRequest request){
+    public int updateProduct(int id, UpdateProductRequest request){
         try{
             String updateQuery = "update Product set name = ?, info =?, value=?, count =? where id = ?";
             jdbcTemplate.update(updateQuery,request.getName()
@@ -96,9 +96,9 @@ public class ProductRepository {
         }
     }
 
-    public int deleteProduct(Long id){
+    public int deleteProduct(int id){
         try{
-            String deleteQuery= "DELETE FROM product WHERE ID="+id.toString();
+            String deleteQuery= "DELETE FROM product WHERE ID="+id;
             jdbcTemplate.update(deleteQuery);
             return 1;
         }

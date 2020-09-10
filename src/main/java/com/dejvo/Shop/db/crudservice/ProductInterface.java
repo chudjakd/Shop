@@ -11,10 +11,10 @@ public interface ProductInterface {
 
     public Integer createProduct(Product product);
     @Nullable
-    public Product readProductById(Long id);
+    public Product readProductById(int id);
     public List<Product> readAllProducts();
-    public int updateProduct (UpdateProductRequest request, Long id);
-    public int deleteProduct (Long id);
+    public int updateProduct (UpdateProductRequest request, int id);
+    public int deleteProduct (int id);
     public Integer updateCountOfProduct(int idofproduct, int newcount );
 
 }

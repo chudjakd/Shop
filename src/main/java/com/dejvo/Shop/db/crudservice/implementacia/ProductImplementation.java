@@ -24,7 +24,7 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
-    public Product readProductById(Long id) {
+    public Product readProductById(int id) {
         return productRepository.readProductById(id);
     }
 
@@ -34,12 +34,12 @@ public class ProductImplementation implements ProductInterface {
     }
 
     @Override
-    public int updateProduct(UpdateProductRequest request, Long id) {
+    public int updateProduct(UpdateProductRequest request, int id) {
         return productRepository.updateProduct(id,request);
     }
 
     @Override
-    public int deleteProduct(Long id) {
+    public int deleteProduct(int id) {
     return productRepository.deleteProduct(id);
     }
 

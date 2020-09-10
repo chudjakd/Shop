@@ -12,7 +12,7 @@ public class Product {
     @Id
     @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    public int id;
     @NonNull
     @Column(name = "seller_id")
     public long sellerId;
@@ -56,11 +56,11 @@ public class Product {
         this.sellerId = sellerId;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -96,23 +96,25 @@ public class Product {
         this.count = count;
     }
 
+
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return sellerId == product.sellerId &&
+        return id == product.id &&
+                sellerId == product.sellerId &&
                 Double.compare(product.value, value) == 0 &&
                 count == product.count &&
-                id.equals(product.id) &&
                 name.equals(product.name) &&
-                info.equals(product.info) ;
-
+                info.equals(product.info) &&
+                Objects.equals(datetime, product.datetime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sellerId, name, info, value, count);
+        return Objects.hash(id, sellerId, name, info, value, count, datetime);
     }
 
     @Override

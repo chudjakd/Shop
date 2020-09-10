@@ -28,7 +28,7 @@ class ProductInterfaceTest {
 
     @Test
     public void deleteProductWithId(){
-        assertEquals(1,productInterface.deleteProduct(2L));
+        assertEquals(1,productInterface.deleteProduct(2));
 
     }
 
@@ -39,16 +39,16 @@ class ProductInterfaceTest {
 
     @Test
     public void readProductById(){
-        assertEquals("Taska",productInterface.readProductById(3L).getName());
+        assertEquals("Taska",productInterface.readProductById(3).getName());
     }
     @Test
     public void updateProductById(){
         UpdateProductRequest request= new UpdateProductRequest("Taska Rapotaska","Trocha ina taska ale dobra",0.69,25);
-        assertEquals(1,productInterface.updateProduct(request,3L));
+        assertEquals(1,productInterface.updateProduct(request,3));
     }
     @Test
     public void updateProductWithNonExistingId(){
         UpdateProductRequest request= new UpdateProductRequest("Taska Rapotaska","Trocha ina taska ale dobra",0.69,25);
-        assertEquals(0,productInterface.updateProduct(request,355L));
+        assertEquals(0,productInterface.updateProduct(request,355));
     }
 }
