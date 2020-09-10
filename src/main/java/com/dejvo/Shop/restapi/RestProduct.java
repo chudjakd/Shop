@@ -20,7 +20,7 @@ public class RestProduct {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity getProductById(@PathVariable Long id){
+    public ResponseEntity getProductById(@PathVariable int id){
         Product product= productInterface.readProductById(id);
         if(product!=null){
             return new ResponseEntity<>(product,HttpStatus.OK);
@@ -43,7 +43,7 @@ public class RestProduct {
 
     // TODO: 9. 9. 2020 Treba zistit na zaklade coho je mozne upravovat niektore parametre osobitne a niektore len v paroch 
     @PatchMapping("product/{id}")
-    public ResponseEntity updateProductWithId(@RequestBody UpdateProductRequest request,@PathVariable("id") Long id){
+    public ResponseEntity updateProductWithId(@RequestBody UpdateProductRequest request,@PathVariable("id") int id){
         if(productInterface.readProductById(id)==null){
             return new ResponseEntity<>("Product with that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
         }
@@ -54,7 +54,7 @@ public class RestProduct {
     }
 
     @DeleteMapping("product/{id}")
-    public ResponseEntity deleteProductWithId(@PathVariable Long id){
+    public ResponseEntity deleteProductWithId(@PathVariable int id){
         if(productInterface.readProductById(id)==null){
             return new ResponseEntity<>("Product with that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
         }
