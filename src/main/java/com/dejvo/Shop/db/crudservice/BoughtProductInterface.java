@@ -1,4 +1,4 @@
-package com.dejvo.Shop.db.crudservice.implementacia;
+package com.dejvo.Shop.db.crudservice;
 
 import com.dejvo.Shop.model.BoughtProduct;
 
