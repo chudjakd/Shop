@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -120,8 +121,16 @@ public class RestControllerTest {
                 Assert.assertNotEquals(product.getCount(),updatedproductfromdb.getCount());
                 Assert.assertNotEquals(product.getValue(),updatedproductfromdb.getValue());
 
-                //Test get all product by seller id
+                //Test insert more products
+                Product productone=new Product(4,"Babika jedna","Cierna babika",BigDecimal.valueOf(0.98),10,Timestamp.from(Instant.now()));
+        Product producttwo=new Product(4,"Babika dva","Beial babika",BigDecimal.valueOf(0.88),10,Timestamp.from(Instant.now()));
+        List<Product> moreProducts=new ArrayList<>();
+        moreProducts.add(productone); moreProducts.add(producttwo);
 
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(moreProducts)))
+                .andExpect(status().isOk());
 
 
                 //Delete product by id
@@ -250,27 +259,6 @@ public class RestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isPreconditionFailed());
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Test
     public void testCustomerAccount() throws Exception {
