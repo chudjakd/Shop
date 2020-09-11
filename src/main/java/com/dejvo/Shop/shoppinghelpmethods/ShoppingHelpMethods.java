@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 public class ShoppingHelpMethods {
 
     public BigDecimal haveCustommerEnoughtMoney(BigDecimal moneyofcustomer, int count, BigDecimal valueofproduct){
-        BigDecimal newMoneyOfCustomer=(moneyofcustomer.subtract(valueofproduct.multiply(BigDecimal.valueOf(count))));
-        return newMoneyOfCustomer.compareTo(BigDecimal.ZERO)<=0? newMoneyOfCustomer:null;
+
+        BigDecimal newMoneyOfCustomer=(moneyofcustomer.subtract((valueofproduct.multiply(BigDecimal.valueOf(count)))));
+        return newMoneyOfCustomer.compareTo(BigDecimal.ZERO)>=0? newMoneyOfCustomer:null;
     }
 }
