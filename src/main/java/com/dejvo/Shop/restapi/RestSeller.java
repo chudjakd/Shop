@@ -1,7 +1,9 @@
 package com.dejvo.Shop.restapi;
 
+import com.dejvo.Shop.db.crudservice.ProductInterface;
 import com.dejvo.Shop.db.crudservice.SellerInterface;
 import com.dejvo.Shop.db.request.UpdateSellerRequest;
+import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,18 @@ public class RestSeller {
 
     @Autowired
     SellerInterface sellerInterface;
+    @Autowired
+    ProductInterface productInterface;
+
+    @GetMapping("/seller/{id}/products")
+    public ResponseEntity getAllProductBySellerId(@PathVariable int id){
+        List<Product> listOfAllProducts=productInterface.getAllProductBySellerId(id);
+        if(listOfAllProducts==null){
+            return new ResponseEntity<>(null,HttpStatus.PRECONDITION_FAILED);
+        }else{
+            return new ResponseEntity<>(listOfAllProducts,HttpStatus.OK);
+        }
+    }
 
     @GetMapping("/sellers")
     public ResponseEntity getAllSellers(){
