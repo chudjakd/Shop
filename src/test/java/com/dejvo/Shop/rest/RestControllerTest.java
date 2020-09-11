@@ -45,12 +45,13 @@ public class RestControllerTest {
     private final ObjectMapper objectMapper= new ObjectMapper();
 
     private Seller seller;
+    private Product product;
     private int countofseller=0;
 
     @Before
-    public void createSeller() throws Exception {
+    public void createSellerandProduct() throws Exception {
 
-        if(seller==null){
+        if(seller==null && product==null){
             seller= new Seller("Selerko","seleris@seler.sk","Selerova 96");
             //Create seller
             String sellerid=mockMvc.perform(post("/api/seller")
@@ -60,18 +61,18 @@ public class RestControllerTest {
                     .andReturn().getResponse().getContentAsString();
             seller.setId(objectMapper.readValue(sellerid,Long.class));
 
+            product= new Product(seller.getId()
+                    ,"Taska"
+                    ,"Cervena taska vysivana"
+                    ,BigDecimal.valueOf(1.25)
+                    ,50
+                    , Timestamp.from(Instant.now()));
+
         }
     }
 
     @Test
     public void testProductu() throws Exception {
-        // TODO: 9. 9. 2020 skurveny json zaokruluje double hodnoty skus zmenit value a dojebe sa to
-        Product product= new Product(seller.getId()
-                ,"Taska"
-                ,"Cervena taska vysivana"
-                ,BigDecimal.valueOf(1.25)
-                ,50
-                , Timestamp.from(Instant.now()));
 
                 //Create product
                 String idofproduct=mockMvc.perform(post("/api/product")
@@ -102,7 +103,7 @@ public class RestControllerTest {
                 Assert.assertEquals(product,listOfProducts.get(0));
 
                  //Update product
-                BigDecimal updateValue=product.getValue();
+                BigDecimal updateValue=product.getValue().add(BigDecimal.valueOf(1.0));
                 int updateCount=product.getCount()+10;
                 UpdateProductRequest request= new UpdateProductRequest(product.getName(),product.getInfo(),updateValue,updateCount);
                 mockMvc.perform(patch("/api/product/"+product.getId())
@@ -179,7 +180,7 @@ public class RestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isPreconditionFailed());
 
-        CustomerAccount customerAccount= new CustomerAccount(5,536.25);
+        CustomerAccount customerAccount= new CustomerAccount(5,BigDecimal.valueOf(536.25));
 
                 String keyfromcreatejson=mockMvc.perform(post("/api/customer/account")
                                             .contentType(MediaType.APPLICATION_JSON)
@@ -261,7 +262,7 @@ public class RestControllerTest {
     @Test
     public void testCustomerAccount() throws Exception {
         Customer customer= new Customer("Jozko","Stasak","stasacik@gmail.com");
-        CustomerAccount customerAccount= new CustomerAccount(1,256.5);
+        CustomerAccount customerAccount= new CustomerAccount(1,BigDecimal.valueOf(256.5));
 
         mockMvc.perform(post("/api/customer")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -286,12 +287,14 @@ public class RestControllerTest {
 
         Product product= new Product(1,"Taska","Taska rapotaska",BigDecimal.valueOf(24.99),11,Timestamp.from(Instant.now()));
 
-        mockMvc.perform(post("/api/product")
+                String productIdJson=mockMvc.perform(post("/api/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
 
-        BuyProductRequest buyProductRequest= new BuyProductRequest(1,1,3);
+        int productIdFromCreateProduct=objectMapper.readValue(productIdJson,int.class);
+        BuyProductRequest buyProductRequest= new BuyProductRequest(productIdFromCreateProduct,1,3);
 
                 String responseJson=mockMvc.perform(post("/api/shopping")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -301,8 +304,8 @@ public class RestControllerTest {
 
 //        BuyProductResponse buyProductResponse=objectMapper.readValue(responseJson,BuyProductResponse.class);
         System.out.println(responseJson);
-        //Skuska metody ked neexistuje product
-        BuyProductRequest buyProductRequest2= new BuyProductRequest(2,1,3);
+        //Skuska metody ked neexistuje product musel som to zmenit na product id 3 pretoze hore v testoch sa vytvori este jeden produkt niekedy
+        BuyProductRequest buyProductRequest2= new BuyProductRequest(3,1,3);
 
         String responseJsonFailed=mockMvc.perform(post("/api/shopping")
                 .contentType(MediaType.APPLICATION_JSON)
