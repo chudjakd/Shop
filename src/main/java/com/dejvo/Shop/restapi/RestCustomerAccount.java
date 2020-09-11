@@ -18,7 +18,10 @@ public class RestCustomerAccount {
 
     @PostMapping("/customer-account")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
-        if(customerAccountInterface.createCustomerAccount(customerAccount)!=null){
+        Integer responseFromCreate=customerAccountInterface.createCustomerAccount(customerAccount);
+
+        System.out.println("hocico");
+        if(responseFromCreate!=null){
             return new ResponseEntity<>(customerAccount.getCustomerid(), HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Build was not successful",HttpStatus.PRECONDITION_FAILED);
