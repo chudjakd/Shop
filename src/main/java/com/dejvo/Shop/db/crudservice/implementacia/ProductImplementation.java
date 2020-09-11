@@ -47,4 +47,9 @@ public class ProductImplementation implements ProductInterface {
     public Integer updateCountOfProduct(int idofproduct, int newcount) {
         return productRepository.updateProductCount(idofproduct, newcount);
     }
+
+    @Override
+    public List<Product> getAllProductBySellerId(int sellerid) {
+        return productRepository.getAllProductsBySellerId(sellerid);
+    }
 }

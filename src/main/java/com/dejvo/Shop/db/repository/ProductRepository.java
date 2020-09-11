@@ -117,7 +117,15 @@ public class ProductRepository {
         catch (DataAccessException e){
             return null;
         }
+    }
 
+    public List<Product> getAllProductsBySellerId(int sellerid){
+        try{
+            String url="SELECT * FROM PRODUCT WHERE SELLER_ID="+sellerid;
+            return jdbcTemplate.query(url,productRowMapper);
+        }catch (Exception e){
+            return null;
+        }
     }
 
 }
