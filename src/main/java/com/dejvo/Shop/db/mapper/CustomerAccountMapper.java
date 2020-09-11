@@ -13,7 +13,7 @@ public class CustomerAccountMapper implements RowMapper<CustomerAccount> {
         CustomerAccount customerAccount= new CustomerAccount();
         customerAccount.setId(resultSet.getInt("id"));
         customerAccount.setCustomerid(resultSet.getInt("customer_id"));
-        customerAccount.setMoney(resultSet.getDouble("money"));
+        customerAccount.setMoney(resultSet.getBigDecimal("money"));
         return customerAccount;
     }
 }

@@ -28,7 +28,7 @@ class DBTestsTest {
 
     private final String insertCustomer= "INSERT INTO CUSTOMER (name,email,address) VALUES (?,?,?)";
     private final String insertSeller= "INSERT INTO SELLER (name,email,address) VALUES (?,?,?)";
-    private final String insertProduct= "INSERT INTO PRODUCT (seller_id,name,info,value,count,datetime) VALUES (?,?,?,?,?,?)";
+    private final String insertProduct= "INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
     private final String insertCustomerAccount="INSERT INTO customer_account  (customer_id,money) VALUES (?,?)";
     @Test
     public void createCustomer(){
@@ -98,7 +98,7 @@ class DBTestsTest {
     public void createCustomerAccount(){
         CustomerAccount customerAccount= new CustomerAccount();
         customerAccount.setCustomerid(7);
-        customerAccount.setMoney(250.5);
+        customerAccount.setMoney(BigDecimal.valueOf(250.5));
 
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
