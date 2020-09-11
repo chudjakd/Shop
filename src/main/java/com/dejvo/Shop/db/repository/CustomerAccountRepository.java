@@ -31,21 +31,25 @@ public class CustomerAccountRepository {
     public Integer createCustomerAccount(CustomerAccount customerAccount){
         String createQuery="INSERT INTO CUSTOMER_ACCOUNT (CUSTOMER_ID,MONEY) VALUES (?,?)";
         KeyHolder keyHolder= new GeneratedKeyHolder();
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps= connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
-                ps.setInt(1,customerAccount.getCustomerid());
-                ps.setBigDecimal(2,customerAccount.getMoney());
-                return ps;
-            }
-        },keyHolder);
-        if(keyHolder!=null){
-            return keyHolder.getKey().intValue();
-        }
-        else {
-            return null;
-        }
+       try{
+           jdbcTemplate.update(new PreparedStatementCreator() {
+               @Override
+               public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                   PreparedStatement ps= connection.prepareStatement(createQuery, Statement.RETURN_GENERATED_KEYS);
+                   ps.setInt(1,customerAccount.getCustomerid());
+                   ps.setBigDecimal(2,customerAccount.getMoney());
+                   return ps;
+               }
+           },keyHolder);
+           if(keyHolder!=null){
+               return keyHolder.getKey().intValue();
+           }
+           else {
+               return null;
+           }
+       }catch (Exception exception){
+           return null;
+       }
     }
 
     public CustomerAccount getCustomerAccountByIdOfCustomer(int idofcustomer){
