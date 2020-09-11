@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -41,8 +42,8 @@ public class ShoppingImplementaciaTest {
         Customer customer1= new Customer("Erzo ","erzotko@gmail","erzebet 25");
         Seller seller=new Seller("Sellerko","Selleris@seller.sk","sellerova 96");
         Seller seller1=new Seller("Ojebavac","Ojebavaci@seller.sk","Ojebavacova 14");
-        Product product= new Product(1L,"Popici taska","Cierna taska je vzdy dobra ma aj zips",9.99,60, Timestamp.from(Instant.now()));
-        Product product1= new Product(2L,"Tuska","Farebna tuska na vsetko",1.05,10, Timestamp.from(Instant.now()));
+        Product product= new Product(1L,"Popici taska","Cierna taska je vzdy dobra ma aj zips", BigDecimal.valueOf(9.99),60, Timestamp.from(Instant.now()));
+        Product product1= new Product(2L,"Tuska","Farebna tuska na vsetko",BigDecimal.valueOf(1.05),10, Timestamp.from(Instant.now()));
 
         Assert.assertNotNull(customerInterface.createCustomer(customer));
         Assert.assertNotNull(customerInterface.createCustomer(customer1));
@@ -53,8 +54,8 @@ public class ShoppingImplementaciaTest {
 
         Long customerid=customerInterface.readAllCustomers().get(0).getId();
         Long customerid2=customerInterface.readAllCustomers().get(1).getId();
-        CustomerAccount customerAccount=new CustomerAccount(customerid.intValue(),523.63);
-        CustomerAccount customerAccount1=new CustomerAccount(customerid2.intValue(),98.25);
+        CustomerAccount customerAccount=new CustomerAccount(customerid.intValue(),BigDecimal.valueOf(523.63));
+        CustomerAccount customerAccount1=new CustomerAccount(customerid2.intValue(),BigDecimal.valueOf(98.25));
         customerAccountInterface.createCustomerAccount(customerAccount);
         customerAccountInterface.createCustomerAccount(customerAccount1);
 
