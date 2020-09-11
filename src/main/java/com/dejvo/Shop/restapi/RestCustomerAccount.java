@@ -16,11 +16,12 @@ public class RestCustomerAccount {
         this.customerAccountInterface = customerAccountInterface;
     }
 
+    //Treba davat pozor lebo toto mam dva krat da sa to vytvorit aj cez restcustomer je to tam asi lepsie
     @PostMapping("/customer-account")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
+
         Integer responseFromCreate=customerAccountInterface.createCustomerAccount(customerAccount);
 
-        System.out.println("hocico");
         if(responseFromCreate!=null){
             return new ResponseEntity<>(customerAccount.getCustomerid(), HttpStatus.OK);
         }else{
