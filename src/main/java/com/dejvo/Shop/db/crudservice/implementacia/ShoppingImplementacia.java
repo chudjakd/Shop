@@ -55,13 +55,14 @@ public class ShoppingImplementacia implements ShoppingInterface {
                 // 3. if
                 if(countofproductatwarehouse>=countofbuyingproduct){
 
-                    Integer newCountOfProduct=countofproductatwarehouse-countofbuyingproduct;   //Odpocitanie poctu ktory customer nakupil od celkoveho poctu produktu na sklade
-                    productInterface.updateCountOfProduct(productid,newCountOfProduct);         // Update poctu produktov na sklade kedze doslo k uspesnemu nakupu
+                    Integer newCountOfProductAtWarehouse=countofproductatwarehouse-countofbuyingproduct;   //Odpocitanie poctu ktory customer nakupil od celkoveho poctu produktu na sklade
+                    productInterface.updateCountOfProduct(productid,newCountOfProductAtWarehouse);         // Update poctu produktov na sklade kedze doslo k uspesnemu nakupu
                     customerAccountInterface.updateMoneyOfCustomerAccount(newMoneyOfCustomer,customerid);   //Update penazi customera ktory uspesne nakupil
                     BoughtProduct boughtProductFromDatabase=boughtProductInterface.getBoughtProductByCustomerIdAndProductId(customerid,productid);
                     // 4. if
                     if(boughtProductFromDatabase!=null){
-                        boughtProductInterface.updateCountOfBoughtProduct(boughtProductFromDatabase,newCountOfProduct);
+                        Integer newCountOfProductInBoughtProduct=boughtProductFromDatabase.getCount()+countofbuyingproduct; //Ak product uz dany zakaznik niekedy nakupoval pridame uz k existujucemu poctu productu
+                        boughtProductInterface.updateCountOfBoughtProduct(boughtProductFromDatabase,newCountOfProductInBoughtProduct);
                         return new BuyProductResponse(true,"Uspesne pripocitanie poctu produktov kedze customer uz dany produkt raz nakupoval");
                     }else{
                         BoughtProduct newBoughtOfProduct= new BoughtProduct(customerid,productid,countofbuyingproduct, Timestamp.from(Instant.now()));
