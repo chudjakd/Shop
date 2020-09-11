@@ -2,7 +2,6 @@ package com.dejvo.Shop.db.crudservice;
 
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
-import com.dejvo.Shop.model.Seller;
 import com.sun.istack.Nullable;
 
 import java.util.List;
@@ -17,5 +16,6 @@ public interface ProductInterface {
     public int deleteProduct (int id);
     public Integer updateCountOfProduct(int idofproduct, int newcount );
     public List<Product> getAllProductBySellerId(int sellerid);
+    public Integer createMoreProducts(List<Product>products);
 
 }

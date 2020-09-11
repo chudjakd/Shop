@@ -52,4 +52,9 @@ public class ProductImplementation implements ProductInterface {
     public List<Product> getAllProductBySellerId(int sellerid) {
         return productRepository.getAllProductsBySellerId(sellerid);
     }
+
+    @Override
+    public Integer createMoreProducts(List<Product> products) {
+        return productRepository.createMoreProduct(products);
+    }
 }

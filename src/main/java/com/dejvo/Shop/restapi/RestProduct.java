@@ -44,7 +44,13 @@ public class RestProduct {
     }
     @PostMapping("/products")
     public ResponseEntity createMoreProducts(@RequestBody List<Product> products){
-        return new ResponseEntity<>(null,HttpStatus.OK);
+        Integer response=productInterface.createMoreProducts(products);
+//        Integer response=null;
+        if(response!=null) {
+            return new ResponseEntity<>("Insert prebehol uspesne", HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Insert neprebehol uspesne",HttpStatus.PRECONDITION_FAILED);
+        }
     }
     // TODO: 9. 9. 2020 Treba zistit na zaklade coho je mozne upravovat niektore parametre osobitne a niektore len v paroch 
     @PatchMapping("product/{id}")
