@@ -62,11 +62,13 @@ public class RestSeller {
     @PatchMapping("/seller/{id}")
     public ResponseEntity updateSeller(@RequestBody UpdateSellerRequest request, @PathVariable("id") Long id){
         if(sellerInterface.readSellerById(id)!=null){
-            sellerInterface.updateSeller(request,id);
-            return new ResponseEntity<>("Update was succesful",HttpStatus.OK);
-        }
-        else if(request.getAddress()==null||request.getEmail()==null||request.getName()==null){
-            return new ResponseEntity<>("You need insert full body.. something missing",HttpStatus.PRECONDITION_FAILED);
+            if(sellerInterface.updateSeller(request,id)==0){
+                return new ResponseEntity<>("You need insert full body.. something missing",HttpStatus.PRECONDITION_FAILED);
+            }
+            else {
+                return new ResponseEntity<>("Update was succesful", HttpStatus.OK);
+            }
+
         }
         else{
             return new ResponseEntity<>("Hmm i hope that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
@@ -75,6 +77,7 @@ public class RestSeller {
     @DeleteMapping("/seller/{id}")
     public ResponseEntity deleteSellerById(@PathVariable Long id){
         if(sellerInterface.readSellerById(id)!=null){
+            sellerInterface.deleteSeller(id);
             return new ResponseEntity<>("Delete was succesfull",HttpStatus.OK);
         }
         else {
