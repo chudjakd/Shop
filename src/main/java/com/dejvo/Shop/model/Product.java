@@ -109,13 +109,12 @@ public class Product {
                 count == product.count &&
                 name.equals(product.name) &&
                 info.equals(product.info) &&
-                value.equals(product.value) &&
-                Objects.equals(datetime, product.datetime);
+                value.equals(product.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, sellerId, name, info, value, count, datetime);
+        return Objects.hash(id, sellerId, name, info, value, count);
     }
 
     @Override
