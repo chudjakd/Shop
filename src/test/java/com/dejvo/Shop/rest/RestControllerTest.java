@@ -143,13 +143,25 @@ public class RestControllerTest {
         requests.add(request1);
         requests.add(request2);
 
-        mockMvc.perform(post("/api/products")
+        mockMvc.perform(patch("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requests)))
                 .andExpect(status().isOk());
 
+        List<UpdateProductRequest> requests2 = new ArrayList<>();
+        UpdateProductRequest request3= new UpdateProductRequest("Picovina","I dont know",BigDecimal.valueOf(9.98),10,1);
+        UpdateProductRequest request4= new UpdateProductRequest("Kokotina","I dont know",BigDecimal.valueOf(7.89),5,15);
+        requests2.add(request3);
+        requests2.add(request4);
 
-                //Delete product by id
+        mockMvc.perform(patch("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requests2)))
+                .andExpect(status().isPreconditionFailed());
+
+
+
+        //Delete product by id
                 mockMvc.perform(delete("/api/product/"+product.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status()

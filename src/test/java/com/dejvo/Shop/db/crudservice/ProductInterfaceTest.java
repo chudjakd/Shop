@@ -41,6 +41,8 @@ class ProductInterfaceTest {
         requests.add(request);
         requests.add(request2);
 
+        assertNotNull(productInterface.updateMoreProducts(requests));
+
         assertEquals(1,productInterface.updateMoreProducts(requests));
         assertEquals(BigDecimal.valueOf(0.80).setScale(2),productInterface.readProductById(1).getValue().setScale(2));
         assertEquals("Cierna tuska",productInterface.readProductById(2).getName());

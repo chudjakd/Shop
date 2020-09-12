@@ -22,6 +22,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProductRepository {
@@ -170,7 +171,14 @@ public class ProductRepository {
     }
 
     public Integer updateMoreProducts(List<UpdateProductRequest> requests){
-        final boolean[] anyupdatewithzeroinsertedrows = new boolean[1];
+       List<Integer> allidofproducts=getAllIdOfProducts();
+       for(UpdateProductRequest request:requests){
+           if(allidofproducts.contains(request.getId())){
+
+           }else{
+               return null;
+           }
+       }
         try{
             String url="UPDATE PRODUCT SET name=?, info=?, value=?, count=? where id=?";
             jdbcTemplate.update(new PreparedStatementCreator() {
