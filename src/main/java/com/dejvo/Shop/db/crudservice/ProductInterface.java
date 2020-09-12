@@ -3,6 +3,7 @@ package com.dejvo.Shop.db.crudservice;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import com.sun.istack.Nullable;
+import org.hibernate.sql.Update;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface ProductInterface {
     public Integer updateCountOfProduct(int idofproduct, int newcount );
     public List<Product> getAllProductBySellerId(int sellerid);
     public Integer createMoreProducts(List<Product>products);
+    public Integer updateMoreProducts(List<UpdateProductRequest>requests);
 
 }

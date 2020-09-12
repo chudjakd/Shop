@@ -130,7 +130,6 @@ public class ProductRepository {
     }
 
     public Integer createMoreProduct(List<Product> products){
-
         try{
             String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
 
@@ -163,6 +162,31 @@ public class ProductRepository {
             });
             return 1;
         } catch (Exception e){
+            return null;
+        }
+    }
+
+    public Integer updateMoreProducts(List<UpdateProductRequest> requests){
+        try{
+            String url="UPDATE PRODUCT SET name=? info=? value=? count=? where id=?";
+            jdbcTemplate.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                    PreparedStatement ps= connection.prepareStatement(url);
+                    for(UpdateProductRequest request:requests){
+                                 ps.setString(1,request.getName());
+                                ps.setString(2,request.getInfo());
+                                ps.setBigDecimal(3,request.getValue());
+                                ps.setInt(4,request.getCount());
+                                ps.setInt(5,request.getId());
+                                ps.addBatch();
+                    }
+                    ps.executeBatch();
+                    return ps;
+                }
+            });
+            return 1;
+        }catch (Exception e){
             return null;
         }
     }

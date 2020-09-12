@@ -57,4 +57,9 @@ public class ProductImplementation implements ProductInterface {
     public Integer createMoreProducts(List<Product> products) {
         return productRepository.createMoreProduct(products);
     }
+
+    @Override
+    public Integer updateMoreProducts(List<UpdateProductRequest> requests) {
+        return productRepository.updateMoreProducts(requests);
+    }
 }
