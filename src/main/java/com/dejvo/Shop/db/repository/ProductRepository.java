@@ -11,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.datasource.ConnectionProxy;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -167,6 +170,7 @@ public class ProductRepository {
     }
 
     public Integer updateMoreProducts(List<UpdateProductRequest> requests){
+        final boolean[] anyupdatewithzeroinsertedrows = new boolean[1];
         try{
             String url="UPDATE PRODUCT SET name=?, info=?, value=?, count=? where id=?";
             jdbcTemplate.update(new PreparedStatementCreator() {
@@ -186,6 +190,15 @@ public class ProductRepository {
                 }
             });
             return 1;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public List<Integer> getAllIdOfProducts(){
+        String url="SELECT ID FROM PRODUCT";
+        try{
+            return jdbcTemplate.queryForList(url,Integer.class);
         }catch (Exception e){
             return null;
         }

@@ -62,4 +62,9 @@ public class ProductImplementation implements ProductInterface {
     public Integer updateMoreProducts(List<UpdateProductRequest> requests) {
         return productRepository.updateMoreProducts(requests);
     }
+
+    @Override
+    public List<Integer> getAllIdOfProducts() {
+        return productRepository.getAllIdOfProducts();
+    }
 }

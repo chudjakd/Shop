@@ -19,5 +19,6 @@ public interface ProductInterface {
     public List<Product> getAllProductBySellerId(int sellerid);
     public Integer createMoreProducts(List<Product>products);
     public Integer updateMoreProducts(List<UpdateProductRequest>requests);
+    public List<Integer> getAllIdOfProducts();
 
 }

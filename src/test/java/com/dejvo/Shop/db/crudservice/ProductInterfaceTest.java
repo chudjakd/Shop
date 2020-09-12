@@ -26,6 +26,7 @@ class ProductInterfaceTest {
 
     @Test
     public void TestProductu(){
+        //Testovanie update viacerych produktov
         Product product= new Product(1,"Lepidlo","Biele lepidlo lacne",BigDecimal.valueOf(0.55),10, Timestamp.from(Instant.now()));
         Product product2= new Product(1,"Tuska","Biele tuska",BigDecimal.valueOf(0.33),5, Timestamp.from(Instant.now()));
 
@@ -41,8 +42,13 @@ class ProductInterfaceTest {
         requests.add(request2);
 
         assertEquals(1,productInterface.updateMoreProducts(requests));
-        assertEquals(BigDecimal.valueOf(0.80),productInterface.readProductById(1).getValue());
+        assertEquals(BigDecimal.valueOf(0.80).setScale(2),productInterface.readProductById(1).getValue().setScale(2));
         assertEquals("Cierna tuska",productInterface.readProductById(2).getName());
+
+        //Testovanie get all id of products
+        assertEquals(2,productInterface.getAllIdOfProducts().size());
+        assertEquals(1,productInterface.getAllIdOfProducts().get(0));
+        assertEquals(2,productInterface.getAllIdOfProducts().get(1));
 
     }
 
