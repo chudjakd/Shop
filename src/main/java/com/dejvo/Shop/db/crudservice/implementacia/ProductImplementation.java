@@ -2,11 +2,13 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 
 import com.dejvo.Shop.db.crudservice.ProductInterface;
 import com.dejvo.Shop.db.repository.ProductRepository;
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -67,4 +69,11 @@ public class ProductImplementation implements ProductInterface {
     public List<Integer> getAllIdOfProducts() {
         return productRepository.getAllIdOfProducts();
     }
+
+    @Override
+    public Integer updateProductByDiscount(ProductDiscountUpdate productDiscountUpdate) {
+        return productRepository.editProductsDiscountThem(productDiscountUpdate);
+    }
+
+
 }

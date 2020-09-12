@@ -5,7 +5,7 @@ import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
 import com.dejvo.Shop.model.Product;
-import com.dejvo.Shop.shoppinghelpmethods.ShoppingHelpMethods;
+import com.dejvo.Shop.helpmethods.shopping.ShoppingHelpMethods;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

@@ -1,5 +1,6 @@
 package com.dejvo.Shop.db.crudservice;
 
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import org.hibernate.sql.Update;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductInterfaceTest {
     @Autowired
     ProductInterface productInterface;
+
 
     @Test
     public void TestProductu(){
@@ -51,6 +53,25 @@ class ProductInterfaceTest {
         assertEquals(2,productInterface.getAllIdOfProducts().size());
         assertEquals(1,productInterface.getAllIdOfProducts().get(0));
         assertEquals(2,productInterface.getAllIdOfProducts().get(1));
+
+        //Testovanie update more products
+        List<Integer> ajdickanaupdate=new ArrayList<>();
+        ajdickanaupdate.add(1);
+        ajdickanaupdate.add(2);
+        ProductDiscountUpdate productDiscountUpdate= new ProductDiscountUpdate(ajdickanaupdate,BigDecimal.valueOf(10));
+
+        assertEquals(1,productInterface.updateProductByDiscount(productDiscountUpdate));
+
+        assertEquals(BigDecimal.valueOf(0.72),productInterface.readProductById(1).getValue());
+        assertEquals(BigDecimal.valueOf(0.63),productInterface.readProductById(2).getValue());
+
+        List<Integer> ajdickanaupdatektoreneexistuju=new ArrayList<>();
+        ajdickanaupdate.add(1);
+        ajdickanaupdate.add(5);
+        ProductDiscountUpdate productDiscountUpdateFailed= new ProductDiscountUpdate(ajdickanaupdatektoreneexistuju,BigDecimal.valueOf(10));
+
+        assertNull(productInterface.updateProductByDiscount(productDiscountUpdateFailed));
+
 
     }
 

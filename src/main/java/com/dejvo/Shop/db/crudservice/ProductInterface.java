@@ -1,10 +1,12 @@
 package com.dejvo.Shop.db.crudservice;
 
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import com.sun.istack.Nullable;
 import org.hibernate.sql.Update;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductInterface {
@@ -20,5 +22,6 @@ public interface ProductInterface {
     public Integer createMoreProducts(List<Product>products);
     public Integer updateMoreProducts(List<UpdateProductRequest>requests);
     public List<Integer> getAllIdOfProducts();
+    public Integer updateProductByDiscount(ProductDiscountUpdate productDiscountUpdate);
 
 }

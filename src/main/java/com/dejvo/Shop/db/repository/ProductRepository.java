@@ -2,6 +2,7 @@ package com.dejvo.Shop.db.repository;
 
 import com.dejvo.Shop.db.mapper.ProductRowMapper;
 import com.dejvo.Shop.db.mapper.SellerRowMapper;
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
@@ -17,10 +18,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -201,6 +204,47 @@ public class ProductRepository {
         }catch (Exception e){
             return null;
         }
+    }
+
+    public Integer editProductsDiscountThem(ProductDiscountUpdate productDiscountUpdate){
+
+    List<Integer> allIdOfProducts=getAllIdOfProducts();
+    List<Integer> allIdOfProductsWhichWannaBeUpdated=productDiscountUpdate.getIdofproducts();
+
+    for(Integer id:allIdOfProductsWhichWannaBeUpdated){
+        if(!allIdOfProducts.contains(id)){
+            return null;
+        }
+        try{
+               jdbcTemplate.update(new PreparedStatementCreator() {
+                   @Override
+                   public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+
+                       String urlUpdate = "UPDATE PRODUCT SET value=? WHERE ID=?";
+                       PreparedStatement ps= connection.prepareStatement(urlUpdate);
+
+                       for(Integer idofdiscountedproduct:allIdOfProductsWhichWannaBeUpdated) {
+
+                           String urlSelect = "SELECT VALUE FROM PRODUCT WHERE ID=" + idofdiscountedproduct;
+                           BigDecimal oldvalue = jdbcTemplate.queryForObject(urlSelect, BigDecimal.class);
+                           BigDecimal discountedvalue = oldvalue.subtract(oldvalue.divide(BigDecimal.valueOf(100))
+                                   .multiply(productDiscountUpdate.getPercentofdiscount())).setScale(2);
+
+                           ps.setBigDecimal(1, discountedvalue);
+                           ps.setInt(2, idofdiscountedproduct);
+                           ps.addBatch();
+                       }
+
+                       ps.executeBatch();
+                       return ps;
+                   }
+               });
+            return 1;
+        }catch (Exception e){
+            return null;
+        }
+    }
+        return null;
     }
 
     public List<Integer> getAllIdOfProducts(){

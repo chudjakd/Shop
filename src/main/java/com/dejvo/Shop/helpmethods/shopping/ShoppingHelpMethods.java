@@ -1,4 +1,4 @@
-package com.dejvo.Shop.shoppinghelpmethods;
+package com.dejvo.Shop.helpmethods.shopping;
 
 import org.springframework.stereotype.Component;
 
