@@ -1,6 +1,8 @@
 package com.dejvo.Shop.db.request;
 
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,9 @@ public class UpdateProductRequest {
     private int count;
     @NonNull
     private int id;
+
+    public UpdateProductRequest() {
+    }
 
     public UpdateProductRequest(@NonNull String name, @NonNull String info, BigDecimal value, int count) {
         this.name = name;
