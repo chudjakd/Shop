@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 
 
@@ -13,6 +14,7 @@ public class UpdateProductRequest {
     @NonNull
     private String info;
     @NonNull
+    @Column(name = "value",precision = 8,scale = 2)
     private BigDecimal value;
     @NonNull
     private int count;
