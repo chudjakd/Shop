@@ -16,12 +16,22 @@ public class UpdateProductRequest {
     private BigDecimal value;
     @NonNull
     private int count;
+    @NonNull
+    private int id;
 
     public UpdateProductRequest(@NonNull String name, @NonNull String info, BigDecimal value, int count) {
         this.name = name;
         this.info = info;
         this.value = value;
         this.count = count;
+    }
+
+    public UpdateProductRequest(@NonNull String name, @NonNull String info, @NonNull BigDecimal value, int count, int id) {
+        this.name = name;
+        this.info = info;
+        this.value = value;
+        this.count = count;
+        this.id = id;
     }
 
     @NonNull
@@ -40,5 +50,9 @@ public class UpdateProductRequest {
 
     public int getCount() {
         return count;
+    }
+
+    public int getId() {
+        return id;
     }
 }
