@@ -60,7 +60,7 @@ public class RestControllerTest {
                     .content(objectMapper.writeValueAsString(seller)))
                     .andExpect(status().isCreated())
                     .andReturn().getResponse().getContentAsString();
-            seller.setId(objectMapper.readValue(sellerid,Long.class));
+            seller.setId(objectMapper.readValue(sellerid,Integer.class));
 
             product= new Product(seller.getId()
                     ,"Taska"
@@ -211,7 +211,7 @@ public class RestControllerTest {
         countofseller++;
 
                 //Get seller by id
-                String sellerjson=mockMvc.perform(get("/api/seller/"+seller.getId().toString())
+                String sellerjson=mockMvc.perform(get("/api/seller/"+seller.getId())
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -235,9 +235,9 @@ public class RestControllerTest {
 
                 List<Seller> listSellers=objectMapper.readValue(jsonlistofsellers, new TypeReference<List<Seller>>() {
                 });
-                Long idicko=seller.getId()-1;
-                Assert.assertEquals(seller,listSellers.get(idicko.intValue()));
-                Assert.assertEquals(seller.getId().intValue(),listSellers.size());
+                int idicko=seller.getId()-1;
+                Assert.assertEquals(seller,listSellers.get(idicko));
+                Assert.assertEquals(seller.getId(),listSellers.size());
 
                 //Test get all products by seller id
                 int idofseller=1;
@@ -250,7 +250,7 @@ public class RestControllerTest {
                 });
 
                 //Delete seller
-                mockMvc.perform(delete("/api/seller/"+seller.getId().toString())
+                mockMvc.perform(delete("/api/seller/"+seller.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
 

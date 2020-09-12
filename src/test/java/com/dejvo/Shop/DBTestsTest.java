@@ -71,7 +71,7 @@ class DBTestsTest {
     @Test
     public void createProduct(){
         Product product= new Product();
-        product.setSellerId(1L);
+        product.setSellerId(1);
         product.setCount(150);
         product.setInfo("Hmm neviem co to je");
         product.setName("Idk");

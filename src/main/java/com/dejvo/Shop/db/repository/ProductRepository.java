@@ -41,7 +41,7 @@ public class ProductRepository {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps= connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-                ps.setLong(1,product.getSellerId());
+                ps.setInt(1,product.getSellerId());
                 ps.setString(2,product.getName());
                 ps.setString(3,product.getInfo());
                 ps.setBigDecimal(4,product.getValue());
@@ -168,7 +168,7 @@ public class ProductRepository {
 
     public Integer updateMoreProducts(List<UpdateProductRequest> requests){
         try{
-            String url="UPDATE PRODUCT SET name=? info=? value=? count=? where id=?";
+            String url="UPDATE PRODUCT SET name=?, info=?, value=?, count=? where id=?";
             jdbcTemplate.update(new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
