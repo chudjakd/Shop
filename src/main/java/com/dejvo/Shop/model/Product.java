@@ -16,7 +16,7 @@ public class Product {
     public int id;
     @NonNull
     @Column(name = "seller_id")
-    public long sellerId;
+    public int sellerId;
     @NonNull
     public String name;
     @NonNull
@@ -33,7 +33,7 @@ public class Product {
     public Product() {
     }
 
-    public Product( long sellerId, @NonNull String name, @NonNull String info, BigDecimal value, int count, @NonNull Timestamp datetime) {
+    public Product( int sellerId, @NonNull String name, @NonNull String info, BigDecimal value, int count, @NonNull Timestamp datetime) {
         this.sellerId = sellerId;
         this.name = name;
         this.info = info;
@@ -51,11 +51,11 @@ public class Product {
         this.datetime = datetime;
     }
 
-    public long getSellerId() {
+    public int getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(long sellerId) {
+    public void setSellerId(int sellerId) {
         this.sellerId = sellerId;
     }
 

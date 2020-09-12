@@ -14,7 +14,7 @@ public class Seller {
     @Id
     @NonNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NonNull
     private String name;
@@ -35,11 +35,11 @@ public class Seller {
 
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -81,7 +81,7 @@ public class Seller {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Seller seller = (Seller) o;
-        return id.equals(seller.id) &&
+        return id == seller.id &&
                 name.equals(seller.name) &&
                 email.equals(seller.email) &&
                 address.equals(seller.address);
