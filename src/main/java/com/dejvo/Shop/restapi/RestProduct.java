@@ -42,6 +42,7 @@ public class RestProduct {
             return new ResponseEntity<>("Hmm something is bad",HttpStatus.PRECONDITION_FAILED);
         }
     }
+
     @PostMapping("/products")
     public ResponseEntity createMoreProducts(@RequestBody List<Product> products){
         Integer response=productInterface.createMoreProducts(products);
@@ -52,6 +53,7 @@ public class RestProduct {
             return new ResponseEntity<>("Insert neprebehol uspesne",HttpStatus.PRECONDITION_FAILED);
         }
     }
+
     // TODO: 9. 9. 2020 Treba zistit na zaklade coho je mozne upravovat niektore parametre osobitne a niektore len v paroch 
     @PatchMapping("product/{id}")
     public ResponseEntity updateProductWithId(@RequestBody UpdateProductRequest request,@PathVariable("id") int id){
@@ -61,6 +63,15 @@ public class RestProduct {
         else{
             productInterface.updateProduct(request,id);
             return new ResponseEntity<>("Update was sucessful",HttpStatus.OK);
+        }
+    }
+
+    @PatchMapping("/products")
+    public ResponseEntity updateMoreProducts(@RequestBody List<UpdateProductRequest> requests){
+        if(productInterface.updateMoreProducts(requests)!=null){
+            return new ResponseEntity<>("Update productov prebehol uspesne",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Hmm nieco selhalo",HttpStatus.PRECONDITION_FAILED);
         }
     }
 

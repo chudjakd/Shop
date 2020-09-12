@@ -10,11 +10,13 @@ import com.dejvo.Shop.model.Seller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hibernate.sql.Update;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.runner.Request;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -130,6 +132,20 @@ public class RestControllerTest {
         mockMvc.perform(post("/api/products")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(moreProducts)))
+                .andExpect(status().isOk());
+
+
+        //Test update more products
+
+        List<UpdateProductRequest> requests = new ArrayList<>();
+        UpdateProductRequest request1= new UpdateProductRequest("Nieco ine ako babika","I dont know",BigDecimal.valueOf(9.98),10,1);
+        UpdateProductRequest request2= new UpdateProductRequest("Nieco ine ako babika dva","I dont know",BigDecimal.valueOf(7.89),5,2);
+        requests.add(request1);
+        requests.add(request2);
+
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requests)))
                 .andExpect(status().isOk());
 
 
