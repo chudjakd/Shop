@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -43,10 +43,16 @@ public class RestCustomer {
     }
 
     @PostMapping("/customer")
-    public ResponseEntity createCustomerById(@RequestBody Customer customer){
+    public ResponseEntity createCustomer(@RequestBody Customer customer){
         Integer customerid=customerInterface.createCustomer(customer);
         if(customerid!=null){
-            return new ResponseEntity<>(customerid,HttpStatus.CREATED);
+            CustomerAccount customerAccount=new CustomerAccount(customerid, BigDecimal.valueOf(0));
+            Integer key=customerAccountInterface.createCustomerAccount(customerAccount);
+            if(key==null){
+                return new ResponseEntity<>("Tak toto nevyslo",HttpStatus.PRECONDITION_FAILED);
+            }else {
+                return new ResponseEntity<>(customerid,HttpStatus.OK);
+            }
         }
         else {
             return new ResponseEntity<>(null,HttpStatus.NO_CONTENT);
@@ -77,7 +83,11 @@ public class RestCustomer {
     @PostMapping("/customer/account")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
         Integer key=customerAccountInterface.createCustomerAccount(customerAccount);
-        return new ResponseEntity<>(key,HttpStatus.OK);
+        if(key==null){
+            return new ResponseEntity<>("Tak toto nevyslo",HttpStatus.PRECONDITION_FAILED);
+        }else {
+            return new ResponseEntity<>(key,HttpStatus.OK);
+        }
     }
 
 }
