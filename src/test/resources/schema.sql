@@ -23,7 +23,8 @@ CREATE TABLE product (
   `info` varchar(80) NOT NULL,
   value double NOT NULL,
   created_at datetime NOT NULL,
-  count int(11) NOT NULL
+  count int(11) NOT NULL,
+  category varchar(45) NOT NULL
 );
 
 DROP TABLE IF EXISTS customer_account;

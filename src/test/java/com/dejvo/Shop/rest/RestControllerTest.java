@@ -70,7 +70,7 @@ public class RestControllerTest {
                     ,"Cervena taska vysivana"
                     ,BigDecimal.valueOf(1.25)
                     ,50
-                    , Timestamp.from(Instant.now()));
+                    , Timestamp.from(Instant.now()),"Clothes");
 
         }
     }
@@ -125,8 +125,8 @@ public class RestControllerTest {
                 Assert.assertNotEquals(product.getValue(),updatedproductfromdb.getValue());
 
                 //Test insert more products
-                Product productone=new Product(4,"Babika jedna","Cierna babika",BigDecimal.valueOf(0.98),10,Timestamp.from(Instant.now()));
-        Product producttwo=new Product(4,"Babika dva","Beial babika",BigDecimal.valueOf(0.88),10,Timestamp.from(Instant.now()));
+                Product productone=new Product(4,"Babika jedna","Cierna babika",BigDecimal.valueOf(0.98),10,Timestamp.from(Instant.now()),"Toys");
+        Product producttwo=new Product(4,"Babika dva","Beial babika",BigDecimal.valueOf(0.88),10,Timestamp.from(Instant.now()),"Toys");
         List<Product> moreProducts=new ArrayList<>();
         moreProducts.add(productone); moreProducts.add(producttwo);
 
@@ -139,8 +139,8 @@ public class RestControllerTest {
         //Test update more products
 
         List<UpdateProductRequest> requests = new ArrayList<>();
-        UpdateProductRequest request1= new UpdateProductRequest("Nieco ine ako babika","I dont know",BigDecimal.valueOf(10),10,1);
-        UpdateProductRequest request2= new UpdateProductRequest("Nieco ine ako babika dva","I dont know",BigDecimal.valueOf(8),5,2);
+        UpdateProductRequest request1= new UpdateProductRequest("Nieco ine ako babika","I dont know",BigDecimal.valueOf(10),10,1,"Toys");
+        UpdateProductRequest request2= new UpdateProductRequest("Nieco ine ako babika dva","I dont know",BigDecimal.valueOf(8),5,2,"Toys");
         requests.add(request1);
         requests.add(request2);
 
@@ -150,8 +150,8 @@ public class RestControllerTest {
                 .andExpect(status().isOk());
 
         List<UpdateProductRequest> requests2 = new ArrayList<>();
-        UpdateProductRequest request3= new UpdateProductRequest("Picovina","I dont know",BigDecimal.valueOf(9.98),10,1);
-        UpdateProductRequest request4= new UpdateProductRequest("Kokotina","I dont know",BigDecimal.valueOf(7.89),5,15);
+        UpdateProductRequest request3= new UpdateProductRequest("Picovina","I dont know",BigDecimal.valueOf(9.98),10,1,"Other");
+        UpdateProductRequest request4= new UpdateProductRequest("Kokotina","I dont know",BigDecimal.valueOf(7.89),5,15,"Other");
         requests2.add(request3);
         requests2.add(request4);
 
@@ -337,7 +337,7 @@ public class RestControllerTest {
 
                 //Testovanie RestShoppingu odtialto
 
-        Product product= new Product(1,"Taska","Taska rapotaska",BigDecimal.valueOf(24.99),11,Timestamp.from(Instant.now()));
+        Product product= new Product(1,"Taska","Taska rapotaska",BigDecimal.valueOf(24.99),11,Timestamp.from(Instant.now()),"Toys");
 
                 String productIdJson=mockMvc.perform(post("/api/product")
                 .contentType(MediaType.APPLICATION_JSON)

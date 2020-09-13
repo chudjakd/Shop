@@ -1,4 +1,4 @@
-package com.dejvo.Shop.model.enums;
+package com.dejvo.Shop.model.helpmodels;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -29,17 +29,20 @@ public class Product {
     @Nullable
     @Column(name = "created_at")
     public Timestamp datetime;
+    @NonNull
+    public String category;
 
     public Product() {
     }
 
-    public Product( int sellerId, @NonNull String name, @NonNull String info, BigDecimal value, int count, @NonNull Timestamp datetime) {
+    public Product(int sellerId, @NonNull String name, @NonNull String info, @NonNull BigDecimal value, int count, @Nullable Timestamp datetime, @NonNull String category) {
         this.sellerId = sellerId;
         this.name = name;
         this.info = info;
         this.value = value;
         this.count = count;
         this.datetime = datetime;
+        this.category = category;
     }
 
     @Nullable
@@ -97,6 +100,15 @@ public class Product {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    @NonNull
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(@NonNull String category) {
+        this.category = category;
     }
 
     @Override

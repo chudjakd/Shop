@@ -29,15 +29,15 @@ class ProductInterfaceTest {
     @Test
     public void TestProductu(){
         //Testovanie update viacerych produktov
-        Product product= new Product(1,"Lepidlo","Biele lepidlo lacne",BigDecimal.valueOf(0.55),10, Timestamp.from(Instant.now()));
-        Product product2= new Product(1,"Tuska","Biele tuska",BigDecimal.valueOf(0.33),5, Timestamp.from(Instant.now()));
+        Product product= new Product(1,"Lepidlo","Biele lepidlo lacne",BigDecimal.valueOf(0.55),10, Timestamp.from(Instant.now()),"Toys");
+        Product product2= new Product(1,"Tuska","Biele tuska",BigDecimal.valueOf(0.33),5, Timestamp.from(Instant.now()),"Toys");
 
         assertNotNull(productInterface.createProduct(product));
         assertNotNull(productInterface.createProduct(product2));
         assertEquals(2,productInterface.readAllProducts().size());
 
-        UpdateProductRequest request= new UpdateProductRequest("Nove Lepidlo","Nove biele lepidlo",BigDecimal.valueOf(0.80),5,1);
-        UpdateProductRequest request2= new UpdateProductRequest("Cierna tuska","Nova cierna tuska",BigDecimal.valueOf(0.70),8,2);
+        UpdateProductRequest request= new UpdateProductRequest("Nove Lepidlo","Nove biele lepidlo",BigDecimal.valueOf(0.80),5,1,"Toys");
+        UpdateProductRequest request2= new UpdateProductRequest("Cierna tuska","Nova cierna tuska",BigDecimal.valueOf(0.70),8,2,"Toys");
 
         List<UpdateProductRequest> requests=new ArrayList<>();
         requests.add(request);
@@ -82,7 +82,7 @@ class ProductInterfaceTest {
     @Test
     @Disabled("OldTest")
     public void createProduct(){
-        Product product= new Product(1,"Lepidlo","Biele lepidlo lacne",BigDecimal.valueOf(0.55),10, Timestamp.from(Instant.now()));
+        Product product= new Product(1,"Lepidlo","Biele lepidlo lacne",BigDecimal.valueOf(0.55),10, Timestamp.from(Instant.now()),"Toys");
         assertNotNull(productInterface.createProduct(product));
     }
 

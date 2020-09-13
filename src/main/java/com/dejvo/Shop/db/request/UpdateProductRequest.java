@@ -22,6 +22,8 @@ public class UpdateProductRequest {
     private int count;
     @NonNull
     private int id;
+    @NonNull
+    private String category;
 
     public UpdateProductRequest() {
     }
@@ -33,12 +35,13 @@ public class UpdateProductRequest {
         this.count = count;
     }
 
-    public UpdateProductRequest(@NonNull String name, @NonNull String info, @NonNull BigDecimal value, int count, int id) {
+    public UpdateProductRequest(@NonNull String name, @NonNull String info, @NonNull BigDecimal value, int count, int id, @NonNull String category) {
         this.name = name;
         this.info = info;
         this.value = value;
         this.count = count;
         this.id = id;
+        this.category = category;
     }
 
     @NonNull
@@ -61,5 +64,10 @@ public class UpdateProductRequest {
 
     public int getId() {
         return id;
+    }
+
+    @NonNull
+    public String getCategory() {
+        return category;
     }
 }
