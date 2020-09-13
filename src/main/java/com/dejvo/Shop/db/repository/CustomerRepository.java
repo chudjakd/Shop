@@ -35,23 +35,19 @@ public class CustomerRepository {
         String query="INSERT INTO CUSTOMER (name,email,address) VALUES (?,?,?)";
         KeyHolder keyHolder=new GeneratedKeyHolder();
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+        try{
+            jdbcTemplate.update(connection -> {
                 PreparedStatement ps= connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1,customer.getName());
                 ps.setString(2,customer.getEmail());
                 ps.setString(3,customer.getAddress());
                 return ps;
-            }
-        },keyHolder);
-
-        if(keyHolder!=null){
+            },keyHolder);
             return keyHolder.getKey().intValue();
+        }catch (DataAccessException e){
+            return null;
         }
-        else{
-        return null;
-        }
+
     }
 
     public Customer readCustomerById(Long id) {
