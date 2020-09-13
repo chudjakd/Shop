@@ -27,15 +27,12 @@ public class ProductRepository {
     ProductRowMapper productRowMapper;
     JdbcTemplate jdbcTemplate;
     ProductCategory productCategory;
-
+    @Autowired
     public ProductRepository(ProductRowMapper productRowMapper, JdbcTemplate jdbcTemplate, ProductCategory productCategory) {
         this.productRowMapper = productRowMapper;
         this.jdbcTemplate = jdbcTemplate;
         this.productCategory = productCategory;
     }
-
-    @Autowired
-
 
     public Integer createProduct(Product product){
 
