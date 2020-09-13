@@ -41,12 +41,7 @@ public class CustomerAccountRepository {
                    return ps;
                }
            },keyHolder);
-           if(keyHolder!=null){
                return keyHolder.getKey().intValue();
-           }
-           else {
-               return null;
-           }
        }catch (Exception exception){
            return null;
        }
