@@ -76,20 +76,18 @@ public class ProductRepository {
     }
 
     public List<Product> readAllProducts(){
-
         String query="SELECT * FROM product";
-
         return jdbcTemplate.query(query,productRowMapper);
-
     }
 
     public int updateProduct(int id, UpdateProductRequest request){
         try{
-            String updateQuery = "update Product set name = ?, info =?, value=?, count =? where id = ?";
+            String updateQuery = "update Product set name = ?, info =?, value=?, count =?, category=? where id = ?";
             jdbcTemplate.update(updateQuery,request.getName()
                     ,request.getInfo()
                     ,request.getValue()
                     ,request.getCount()
+                    ,request.getCategory()
                     ,id);
             return 1;
         }
@@ -132,34 +130,32 @@ public class ProductRepository {
 
     public Integer createMoreProduct(List<Product> products){
         try{
-            String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
+            String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at,category) VALUES (?,?,?,?,?,?,?)";
 
-            jdbcTemplate.update(new PreparedStatementCreator() {
-                @Override
-                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                    PreparedStatement ps= connection.prepareStatement(query);
-                    int counter=0;
-                    for(Product product:products) {
-                        ps.setLong(1, product.getSellerId());
-                        ps.setString(2, product.getName());
-                        ps.setString(3, product.getInfo());
-                        ps.setBigDecimal(4, product.getValue());
-                        ps.setInt(5, product.getCount());
-                        if (product.getDatetime() == null) {
-                            ps.setTimestamp(6, Timestamp.from(Instant.now()));
-                        } else {
-                            ps.setTimestamp(6, product.getDatetime());
-                        }
-                        counter++;
-                        if(counter==products.size()){
-
-                        }else{
-                            ps.addBatch();
-                        }
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps= connection.prepareStatement(query);
+                int counter=0;
+                for(Product product:products) {
+                    ps.setLong(1, product.getSellerId());
+                    ps.setString(2, product.getName());
+                    ps.setString(3, product.getInfo());
+                    ps.setBigDecimal(4, product.getValue());
+                    ps.setInt(5, product.getCount());
+                    if (product.getDatetime() == null) {
+                        ps.setTimestamp(6, Timestamp.from(Instant.now()));
+                    } else {
+                        ps.setTimestamp(6, product.getDatetime());
                     }
-                    ps.executeBatch();
-                    return ps;
+                    ps.setString(7,product.getCategory());
+                    counter++;
+                    if(counter==products.size()){
+
+                    }else{
+                        ps.addBatch();
+                    }
                 }
+                ps.executeBatch();
+                return ps;
             });
             return 1;
         } catch (Exception e){
@@ -177,7 +173,7 @@ public class ProductRepository {
            }
        }
         try{
-            String url="UPDATE PRODUCT SET name=?, info=?, value=?, count=? where id=?";
+            String url="UPDATE PRODUCT SET name=?, info=?, value=?, count=?, category=? where id=?";
             jdbcTemplate.update(new PreparedStatementCreator() {
                 @Override
                 public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -187,7 +183,8 @@ public class ProductRepository {
                                 ps.setString(2,request.getInfo());
                                 ps.setBigDecimal(3,request.getValue());
                                 ps.setInt(4,request.getCount());
-                                ps.setInt(5,request.getId());
+                                ps.setString(5,request.getCategory());
+                                ps.setInt(6,request.getId());
                                 ps.addBatch();
                     }
                     ps.executeBatch();
