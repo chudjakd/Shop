@@ -1,6 +1,7 @@
 package com.dejvo.Shop.restapi;
 
 import com.dejvo.Shop.db.crudservice.ProductInterface;
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,14 @@ public class RestProduct {
         else{
             productInterface.deleteProduct(id);
             return new ResponseEntity<>("Delete was successful",HttpStatus.OK);
+        }
+    }
+    @PostMapping("/products/discount")
+    public ResponseEntity updateProductByDiscount(@RequestBody ProductDiscountUpdate productDiscountUpdate){
+        if(productInterface.updateProductByDiscount(productDiscountUpdate)!=null){
+            return new ResponseEntity<>("Produkty boli zlavnene",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Todle nevyslo neviem co je zle asi idecka",HttpStatus.PRECONDITION_FAILED);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.dejvo.Shop.rest;
 
 import com.dejvo.Shop.db.request.BuyProductRequest;
+import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.Customer;
@@ -138,8 +139,8 @@ public class RestControllerTest {
         //Test update more products
 
         List<UpdateProductRequest> requests = new ArrayList<>();
-        UpdateProductRequest request1= new UpdateProductRequest("Nieco ine ako babika","I dont know",BigDecimal.valueOf(9.98),10,1);
-        UpdateProductRequest request2= new UpdateProductRequest("Nieco ine ako babika dva","I dont know",BigDecimal.valueOf(7.89),5,2);
+        UpdateProductRequest request1= new UpdateProductRequest("Nieco ine ako babika","I dont know",BigDecimal.valueOf(10),10,1);
+        UpdateProductRequest request2= new UpdateProductRequest("Nieco ine ako babika dva","I dont know",BigDecimal.valueOf(8),5,2);
         requests.add(request1);
         requests.add(request2);
 
@@ -159,6 +160,24 @@ public class RestControllerTest {
                 .content(objectMapper.writeValueAsString(requests2)))
                 .andExpect(status().isPreconditionFailed());
 
+        //Test update products by discount
+        List<Integer> idofproducts=new ArrayList<>();
+        idofproducts.add(1);
+        idofproducts.add(2);
+        ProductDiscountUpdate productDiscountUpdate= new ProductDiscountUpdate(idofproducts,BigDecimal.valueOf(20));
+
+        mockMvc.perform(post("/api/products/discount")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(productDiscountUpdate)))
+                .andExpect(status().isOk());
+
+        String productonejson=mockMvc.perform(get("/api/product/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        Product updatnutyproductfromdb=objectMapper.readValue(productonejson,Product.class);
+
+        Assert.assertEquals(BigDecimal.valueOf(8.00).setScale(2),updatnutyproductfromdb.getValue());
 
 
         //Delete product by id
@@ -171,6 +190,10 @@ public class RestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isPreconditionFailed())
                 .andReturn().getResponse().getContentAsString();
+
+
+
+
 
 
     }
