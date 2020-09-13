@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class DBTestsTest {
@@ -28,7 +27,7 @@ class DBTestsTest {
 
     private final String insertCustomer= "INSERT INTO CUSTOMER (name,email,address) VALUES (?,?,?)";
     private final String insertSeller= "INSERT INTO SELLER (name,email,address) VALUES (?,?,?)";
-    private final String insertProduct= "INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
+    private final String insertProduct= "INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at,category) VALUES (?,?,?,?,?,?,?)";
     private final String insertCustomerAccount="INSERT INTO customer_account  (customer_id,money) VALUES (?,?)";
     @Test
     public void createCustomer(){
@@ -37,15 +36,12 @@ class DBTestsTest {
         customer.setEmail("janko@grag.sk");
         customer.setAddress("picovina 54");
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps= connection.prepareStatement(insertCustomer);
-                ps.setString(1,"Janko");
-                ps.setString(2,"janko@grag.sk");
-                ps.setString(3,"picovina 54");
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps= connection.prepareStatement(insertCustomer);
+            ps.setString(1,"Janko");
+            ps.setString(2,"janko@grag.sk");
+            ps.setString(3,"picovina 54");
+            return ps;
         });
 
     }
@@ -56,16 +52,14 @@ class DBTestsTest {
         seller.setEmail("adsdfa@asdf.sl");
         seller.setName("Ertr");
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps= connection.prepareStatement(insertSeller);
-                ps.setString(1,seller.getName());
-                ps.setString(2,seller.getEmail());
-                ps.setString(3,seller.getAddress());
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps= connection.prepareStatement(insertSeller);
+            ps.setString(1,seller.getName());
+            ps.setString(2,seller.getEmail());
+            ps.setString(3,seller.getAddress());
+            return ps;
         });
+
     }
 
     @Test
@@ -77,19 +71,18 @@ class DBTestsTest {
         product.setName("Idk");
         product.setValue(BigDecimal.valueOf(12));
         product.setDatetime(Timestamp.from(Instant.now()));
+        product.setCategory("Toys");
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps= connection.prepareStatement(insertProduct);
-                ps.setLong(1,product.getSellerId());
-                ps.setString(2,product.getName());
-                ps.setString(3,product.getInfo());
-                ps.setBigDecimal(4,product.getValue());
-                ps.setInt(5,product.getCount());
-                ps.setTimestamp(6,product.getDatetime());
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps= connection.prepareStatement(insertProduct);
+            ps.setLong(1,product.getSellerId());
+            ps.setString(2,product.getName());
+            ps.setString(3,product.getInfo());
+            ps.setBigDecimal(4,product.getValue());
+            ps.setInt(5,product.getCount());
+            ps.setTimestamp(6,product.getDatetime());
+            ps.setString(7,product.getCategory());
+            return ps;
         });
 
     }
@@ -100,14 +93,11 @@ class DBTestsTest {
         customerAccount.setCustomerid(7);
         customerAccount.setMoney(BigDecimal.valueOf(250.5));
 
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps= connection.prepareStatement(insertCustomerAccount);
-                ps.setInt(1,7);
-                ps.setDouble(2,250.5);
-                return ps;
-            }
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps= connection.prepareStatement(insertCustomerAccount);
+            ps.setInt(1,7);
+            ps.setDouble(2,250.5);
+            return ps;
         });
 
     }

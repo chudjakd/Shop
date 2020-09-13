@@ -42,8 +42,8 @@ public class ShoppingImplementaciaTest {
         Customer customer1= new Customer("Erzo ","erzotko@gmail","erzebet 25");
         Seller seller=new Seller("Sellerko","Selleris@seller.sk","sellerova 96");
         Seller seller1=new Seller("Ojebavac","Ojebavaci@seller.sk","Ojebavacova 14");
-        Product product= new Product(1,"Popici taska","Cierna taska je vzdy dobra ma aj zips", BigDecimal.valueOf(9.99),60, Timestamp.from(Instant.now()));
-        Product product1= new Product(2,"Tuska","Farebna tuska na vsetko",BigDecimal.valueOf(1.05),10, Timestamp.from(Instant.now()));
+        Product product= new Product(1,"Popici taska","Cierna taska je vzdy dobra ma aj zips", BigDecimal.valueOf(9.99),60, Timestamp.from(Instant.now()),"Toys");
+        Product product1= new Product(2,"Tuska","Farebna tuska na vsetko",BigDecimal.valueOf(1.05),10, Timestamp.from(Instant.now()),"Toys");
 
         Assert.assertNotNull(customerInterface.createCustomer(customer));
         Assert.assertNotNull(customerInterface.createCustomer(customer1));

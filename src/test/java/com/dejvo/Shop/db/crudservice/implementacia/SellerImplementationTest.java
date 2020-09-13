@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Deprecated
 class SellerImplementationTest {
 
     SellerRepository sellerRepository;

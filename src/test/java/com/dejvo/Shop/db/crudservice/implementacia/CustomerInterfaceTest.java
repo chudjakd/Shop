@@ -11,14 +11,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class CustomerInterfaceTest {
     // TODO: 8. 9. 2020 Ak chces testovat musis si davat pozor lebo tieto testy su pripojene na mysql databazu a moze sa stat ze uz nebudu existovat niektory pouzivatelia
-    // ak to potom chces tak prerobit tak musis pred kazdu classu dat @DirtiesContext(classmode = DirtiesContext.ClassMode.BEFORE.class)
+    // ak to potom chces tak prerobit tak musis pred kazdu classu dat @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 
     CustomerRepository customerRepository;
     @Autowired

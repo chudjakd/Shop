@@ -1,19 +1,14 @@
 package com.dejvo.Shop.db.repository;
 
 import com.dejvo.Shop.db.mapper.ProductRowMapper;
-import com.dejvo.Shop.db.mapper.SellerRowMapper;
 import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
-import com.dejvo.Shop.model.Seller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.ConnectionProxy;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -22,11 +17,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.*;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Component
 public class ProductRepository {
@@ -43,7 +35,7 @@ public class ProductRepository {
 
     public Integer createProduct(Product product){
 
-        String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at) VALUES (?,?,?,?,?,?)";
+        String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at,category) VALUES (?,?,?,?,?,?,?)";
         KeyHolder keyHolder=new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -59,6 +51,7 @@ public class ProductRepository {
                 }else{
                     ps.setTimestamp(6,product.getDatetime());
                 }
+                ps.setString(7,product.getCategory());
                 return ps;
             }
         },keyHolder);
