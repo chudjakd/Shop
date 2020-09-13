@@ -37,9 +37,8 @@ public class ProductRepository {
 
         String query="INSERT INTO PRODUCT (seller_id,name,info,value,count,created_at,category) VALUES (?,?,?,?,?,?,?)";
         KeyHolder keyHolder=new GeneratedKeyHolder();
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+        try{
+            jdbcTemplate.update(connection -> {
                 PreparedStatement ps= connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
                 ps.setInt(1,product.getSellerId());
                 ps.setString(2,product.getName());
@@ -53,13 +52,11 @@ public class ProductRepository {
                 }
                 ps.setString(7,product.getCategory());
                 return ps;
-            }
-        },keyHolder);
+            },keyHolder);
 
-        if(keyHolder!=null){
-            return keyHolder.getKey().intValue();
-        }
-        else{
+                return keyHolder.getKey().intValue();
+
+        }catch (DataAccessException e){
             return null;
         }
     }
