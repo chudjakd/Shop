@@ -4,6 +4,7 @@ import com.dejvo.Shop.db.mapper.ProductRowMapper;
 import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
 import com.dejvo.Shop.model.Product;
+import com.dejvo.Shop.model.helpmodels.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,13 +26,16 @@ public class ProductRepository {
 
     ProductRowMapper productRowMapper;
     JdbcTemplate jdbcTemplate;
+    ProductCategory productCategory;
 
-    @Autowired
-    public ProductRepository(ProductRowMapper productRowMapper, JdbcTemplate jdbcTemplate) {
+    public ProductRepository(ProductRowMapper productRowMapper, JdbcTemplate jdbcTemplate, ProductCategory productCategory) {
         this.productRowMapper = productRowMapper;
         this.jdbcTemplate = jdbcTemplate;
-
+        this.productCategory = productCategory;
     }
+
+    @Autowired
+
 
     public Integer createProduct(Product product){
 
@@ -50,7 +54,7 @@ public class ProductRepository {
                 }else{
                     ps.setTimestamp(6,product.getDatetime());
                 }
-                ps.setString(7,product.getCategory());
+                ps.setString(7,productCategory.getProductCategoryIfExistIfNotReturnOther(product.getCategory()));
                 return ps;
             },keyHolder);
 
@@ -84,7 +88,7 @@ public class ProductRepository {
                     ,request.getInfo()
                     ,request.getValue()
                     ,request.getCount()
-                    ,request.getCategory()
+                    ,productCategory.getProductCategoryIfExistIfNotReturnOther(request.getCategory())
                     ,id);
             return 1;
         }
@@ -143,7 +147,7 @@ public class ProductRepository {
                     } else {
                         ps.setTimestamp(6, product.getDatetime());
                     }
-                    ps.setString(7,product.getCategory());
+                    ps.setString(7,productCategory.getProductCategoryIfExistIfNotReturnOther(product.getCategory()));
                     counter++;
                     if(counter==products.size()){
 
@@ -180,7 +184,7 @@ public class ProductRepository {
                                 ps.setString(2,request.getInfo());
                                 ps.setBigDecimal(3,request.getValue());
                                 ps.setInt(4,request.getCount());
-                                ps.setString(5,request.getCategory());
+                                ps.setString(5,productCategory.getProductCategoryIfExistIfNotReturnOther(request.getCategory()));
                                 ps.setInt(6,request.getId());
                                 ps.addBatch();
                     }
