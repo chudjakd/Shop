@@ -19,6 +19,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -226,9 +227,9 @@ public class ProductRepository {
                        for(Integer idofdiscountedproduct:allIdOfProductsWhichWannaBeUpdated) {
 
                            String urlSelect = "SELECT VALUE FROM PRODUCT WHERE ID=" + idofdiscountedproduct;
-                           BigDecimal oldvalue = jdbcTemplate.queryForObject(urlSelect, BigDecimal.class);
+                           BigDecimal oldvalue = jdbcTemplate.queryForObject(urlSelect, BigDecimal.class).setScale(2);
                            BigDecimal discountedvalue = oldvalue.subtract(oldvalue.divide(BigDecimal.valueOf(100))
-                                   .multiply(productDiscountUpdate.getPercentofdiscount())).setScale(2);
+                                   .multiply(productDiscountUpdate.getPercentofdiscount())).setScale(2, RoundingMode.HALF_UP);
 
                            ps.setBigDecimal(1, discountedvalue);
                            ps.setInt(2, idofdiscountedproduct);
