@@ -3,26 +3,19 @@ package com.dejvo.Shop.rest;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.request.ProductDiscountUpdate;
 import com.dejvo.Shop.db.request.UpdateProductRequest;
-import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hibernate.sql.Update;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.runner.Request;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -50,7 +43,6 @@ public class RestControllerTest {
 
     private Seller seller;
     private Product product;
-    private int countofseller=0;
 
     @Before
     public void createSellerandProduct() throws Exception {
@@ -186,21 +178,15 @@ public class RestControllerTest {
                         .andExpect(status()
                         .isOk());
 
-                String getDeletedProduct=mockMvc.perform(get("/api/product/"+product.getId())
+                mockMvc.perform(get("/api/product/"+product.getId())
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isPreconditionFailed())
-                .andReturn().getResponse().getContentAsString();
-
-
-
-
-
+                .andExpect(status().isPreconditionFailed());
 
     }
 
     @Test
     public void testCustomera() throws Exception{
-        countofseller++;
+
         Customer customer= new Customer("Jozko","picko@gmail.com","Alopova 54");
 
             //Add customer
@@ -259,7 +245,7 @@ public class RestControllerTest {
 
     @Test
     public void testSellera() throws Exception {
-        countofseller++;
+
 
                 //Get seller by id
                 String sellerjson=mockMvc.perform(get("/api/seller/"+seller.getId())
@@ -271,7 +257,7 @@ public class RestControllerTest {
                 Assert.assertEquals(sellerfromdb,seller);
 
                 //Get Seller with id that doesnt exist
-                String sellerjsonwhichdoesntexist=mockMvc.perform(get("/api/seller/15")
+                mockMvc.perform(get("/api/seller/15")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andReturn().getResponse().getContentAsString();
@@ -297,7 +283,7 @@ public class RestControllerTest {
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
 
-                List<Product> listOfAllProductsFromDB=objectMapper.readValue(listOfAllProductsBySellerIdJson, new TypeReference<List<Product>>() {
+                objectMapper.readValue(listOfAllProductsBySellerIdJson, new TypeReference<List<Product>>() {
                 });
 
                 //Delete seller
@@ -328,12 +314,12 @@ public class RestControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
 
-                        String customeraccountJson=mockMvc.perform(get("/api/customer-account/"+idofcustomer)
+                        mockMvc.perform(get("/api/customer-account/"+idofcustomer)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
 
-                CustomerAccount customerAccountfromDB=objectMapper.readValue(customeraccountJson,CustomerAccount.class);
+
 
                 //Testovanie RestShoppingu odtialto
 

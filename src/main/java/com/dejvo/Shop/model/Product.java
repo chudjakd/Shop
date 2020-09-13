@@ -18,6 +18,7 @@ public class Product {
     @Column(name = "seller_id")
     public int sellerId;
     @NonNull
+    @Column(name="name")
     public String name;
     @NonNull
     public String info;
