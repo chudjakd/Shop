@@ -28,7 +28,12 @@ public class RestShopping {
 
     @PostMapping("/shopping/card")
     public ResponseEntity buyProductByCard(@RequestBody BuyProductByCardRequest buyProductByCardRequest){
-        return null;
+        BuyProductResponse response= shoppingInterface.buyProductByCard(buyProductByCardRequest);
+        if(response.isSuccess()){
+            return new ResponseEntity<>(response.getErrormessage(),HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(response.getErrormessage(),HttpStatus.PRECONDITION_FAILED);
+        }
     }
 
 }
