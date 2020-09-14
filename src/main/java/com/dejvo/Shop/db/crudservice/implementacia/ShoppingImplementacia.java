@@ -94,7 +94,7 @@ public class ShoppingImplementacia implements ShoppingInterface {
         }
     }
 
-
+    // TODO: 14. 9. 2020 Je tam este moznost ze ked niekto zada datum ktory neexistuje alebo uz je karta neplatna tak by malo hodit chybu 
     // 1 if kontroluje ci je cislo karty v spravnom formate
     //2 if kontroluje ci je datetime karty v spravnom formate
     // 3 if kontroluje ci je safecode karty v spravnom formate
@@ -134,7 +134,7 @@ public class ShoppingImplementacia implements ShoppingInterface {
         }
 
         // 5 if
-        if (customerAccountInterface.getCustomerByIdOfCustomer(customerid) == null) {
+        if (customerInterface.readCustomerById(Long.valueOf(customerid)) == null) {
             return new BuyProductResponse(false, "Customer s ID:" + customerid + " neexistuje");
         }
 
