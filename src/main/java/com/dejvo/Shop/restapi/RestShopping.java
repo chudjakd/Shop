@@ -2,6 +2,7 @@ package com.dejvo.Shop.restapi;
 
 
 import com.dejvo.Shop.db.crudservice.ShoppingInterface;
+import com.dejvo.Shop.db.request.BuyProductByCardRequest;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,11 @@ public class RestShopping {
         }else{
             return new ResponseEntity<>(response.getErrormessage(),HttpStatus.PRECONDITION_FAILED);
         }
+    }
 
+    @PostMapping("/shopping/card")
+    public ResponseEntity buyProductByCard(@RequestBody BuyProductByCardRequest buyProductByCardRequest){
+        return null;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.dejvo.Shop.db.crudservice.implementacia;
 
 import com.dejvo.Shop.db.crudservice.*;
+import com.dejvo.Shop.db.request.BuyProductByCardRequest;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.Customer;
@@ -114,6 +115,74 @@ public class ShoppingImplementaciaTest {
         BuyProductResponse response8 =shoppingInterface.buyProduct(buyProductRequest8);
         assertFalse(response8.isSuccess());
         System.out.println("Response8 ocakavame ze nie je dostatok produktov: "+response8.getErrormessage());
+    }
+
+    @Test
+    public void testovanieShoppingByCard(){
+        String cardnumber="4405 7789 6739 6700";
+        String datetime="04/22";
+        String safenumber="272";
+        int countofbuyingproduct=5;
+
+        //Otestovanie zleho cardnumber
+        String cardnumber2="4405 7789 67396700";
+        String datetime2="04/22";
+        String safenumber2="272";
+
+        BuyProductByCardRequest buyProductByCardReques2= new BuyProductByCardRequest(1,1,cardnumber2,datetime2,safenumber2,countofbuyingproduct);
+
+        assertFalse(shoppingInterface.buyProductByCard(buyProductByCardReques2).isSuccess());
+
+        //Otestovanie zleho datecard
+        String cardnumber3="4405 7789 6739 6700";
+        String datetime3="04 22";
+        String safenumber3="272";
+
+        BuyProductByCardRequest buyProductByCardReques3= new BuyProductByCardRequest(1,1,cardnumber3,datetime3,safenumber3,countofbuyingproduct);
+
+        assertFalse(shoppingInterface.buyProductByCard(buyProductByCardReques3).isSuccess());
+
+        //Otestovanie zleho safenumber
+        String cardnumber4="4405 7789 6739 6700";
+        String datetime4="04/22";
+        String safenumber4="272 ";
+
+        BuyProductByCardRequest buyProductByCardRequest4= new BuyProductByCardRequest(1,1,cardnumber4,datetime4,safenumber4,countofbuyingproduct);
+
+        assertFalse(shoppingInterface.buyProductByCard(buyProductByCardRequest4).isSuccess());
+
+        //Otestovanie zleho id productu
+
+        BuyProductByCardRequest buyProductByCardRequest5= new BuyProductByCardRequest(5,1,cardnumber,datetime,safenumber,countofbuyingproduct);
+        BuyProductResponse response5=shoppingInterface.buyProductByCard(buyProductByCardRequest5);
+        assertFalse(response5.isSuccess());
+        System.out.println("Ocakavame ze id productu neexistuje: "+response5.getErrormessage());
+
+        //Otestovanie neexistujuceho customera
+
+        BuyProductByCardRequest buyProductByCardRequest6= new BuyProductByCardRequest(1,5,cardnumber,datetime,safenumber,countofbuyingproduct);
+        BuyProductResponse response6=shoppingInterface.buyProductByCard(buyProductByCardRequest6);
+        assertFalse(response6.isSuccess());
+        System.out.println("Ocakavame ze customer neexistuje: "+response6.getErrormessage());
+
+        // Otestovanie nedostatocneho poctu produktov
+        BuyProductByCardRequest buyProductByCardRequest7= new BuyProductByCardRequest(2,1,cardnumber,datetime,safenumber,20);
+        BuyProductResponse response7=shoppingInterface.buyProductByCard(buyProductByCardRequest7);
+        assertFalse(response7.isSuccess());
+        System.out.println("Ocakavame ze nie je dostatok produktov: "+response7.getErrormessage());
+
+        //Otestovanie spravneho nakupu
+        BuyProductByCardRequest buyProductByCardRequest= new BuyProductByCardRequest(1,1,cardnumber,datetime,safenumber,countofbuyingproduct);
+        BuyProductResponse buyProductResponse8=shoppingInterface.buyProductByCard(buyProductByCardRequest);
+        assertTrue(buyProductResponse8.isSuccess());
+        System.out.println("Ocakavame message spravny nakup: "+buyProductResponse8.getErrormessage());
+
+        //Otestovanie spravneho nakupu
+        BuyProductByCardRequest buyProductByCardRequest8= new BuyProductByCardRequest(1,1,cardnumber,datetime,safenumber,2);
+        BuyProductResponse buyProductResponse9=shoppingInterface.buyProductByCard(buyProductByCardRequest8);
+        assertTrue(buyProductResponse9.isSuccess());
+        System.out.println("Ocakavame message pripocitania: "+buyProductResponse9.getErrormessage());
+
 
 
     }
