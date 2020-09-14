@@ -1,6 +1,7 @@
 package com.dejvo.Shop.restapi;
 
 import com.dejvo.Shop.db.crudservice.CustomerAccountInterface;
+import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.model.CustomerAccount;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,15 @@ public class RestCustomerAccount {
             return new ResponseEntity<>(customerAccount,HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Toto nebolo uspesne skus skontrolovat to id co si zadal",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+    @PatchMapping("/customer-account")
+    public ResponseEntity updateCustomerMoneyByCustomerId(@RequestBody UpdateCustomerAccountMoney updateCustomerAccountMoney){
+        Integer response=customerAccountInterface.updateMoneyOfCustomerAccount(updateCustomerAccountMoney);
+        if(response!=null){
+            return new ResponseEntity<>("Update money pre customera s id:"+response +" prebehol uspesne",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Tak tento update nevysiel skus skontrolovat co si zadal",HttpStatus.PRECONDITION_FAILED);
         }
     }
 }
