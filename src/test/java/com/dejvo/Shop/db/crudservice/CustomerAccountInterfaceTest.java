@@ -1,5 +1,6 @@
 package com.dejvo.Shop.db.crudservice;
 
+import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.model.CustomerAccount;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,13 +44,15 @@ class CustomerAccountInterfaceTest {
         Assert.assertEquals(BigDecimal.valueOf(351.55),customerAccountInterface.getAllCustomerAccounts().get(1).getMoney());
 
         //Test update
-        int pica=customerAccountInterface.updateMoneyOfCustomerAccount(BigDecimal.valueOf(598.2),5);
+
+        UpdateCustomerAccountMoney updateCustomerAccountMoney= new UpdateCustomerAccountMoney(5,BigDecimal.valueOf(598.2));
+        int pica=customerAccountInterface.updateMoneyOfCustomerAccount(updateCustomerAccountMoney);
         Assert.assertEquals(1,pica);
 
         Assert.assertEquals(BigDecimal.valueOf(598.2),customerAccountInterface.getCustomerByIdOfCustomer(5).getMoney());
 
         Assert.assertEquals(BigDecimal.valueOf(598.2),customerAccountInterface.getMoneyByCustomerId(5));
-        Assert.assertEquals(BigDecimal.valueOf(-1),customerAccountInterface.getMoneyByCustomerId(10));
+        Assert.assertNull(customerAccountInterface.getMoneyByCustomerId(10));
 
 
 
