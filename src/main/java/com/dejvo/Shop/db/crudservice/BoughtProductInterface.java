@@ -10,5 +10,5 @@ public interface BoughtProductInterface {
     public Integer createBoughtProduct(BoughtProduct boughtProduct);
     public Integer updateCountOfBoughtProduct(BoughtProduct boughtProduct, int count);
     public List<BoughtProduct> getAllBoughtProductsByCustomerId(int customerid);
-
+    public List<BoughtProduct> getAllBoughtProductByProductId(int productid);
 }

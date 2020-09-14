@@ -35,4 +35,9 @@ public class BoughtProductImplementation implements BoughtProductInterface {
     public List<BoughtProduct> getAllBoughtProductsByCustomerId(int customerid) {
         return boughtProductRepository.getAllProductByCustomerId(customerid);
     }
+
+    @Override
+    public List<BoughtProduct> getAllBoughtProductByProductId(int productid) {
+        return boughtProductRepository.getAllProductByProductId(productid);
+    }
 }

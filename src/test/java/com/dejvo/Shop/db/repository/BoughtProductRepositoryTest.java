@@ -26,5 +26,17 @@ public class BoughtProductRepositoryTest {
         assertEquals(1,boughtProductRepository.getAllProductByCustomerId(1).size());
 
         assertNotNull(boughtProductRepository.selectBoughtProductByCustomerIdAndProductId(1,1));
+
+        BoughtProduct boughtProduct1= new BoughtProduct(1,2,5, Timestamp.from(Instant.now()));
+        boughtProductRepository.createBoughtProduct(boughtProduct1);
+
+        BoughtProduct boughtProduct2= new BoughtProduct(2,2,5, Timestamp.from(Instant.now()));
+        boughtProductRepository.createBoughtProduct(boughtProduct2);
+
+        assertEquals(2,boughtProductRepository.getAllProductByProductId(2).size());
+
+        assertEquals(2,boughtProductRepository.getAllProductByCustomerId(1).size());
+
+
     }
 }

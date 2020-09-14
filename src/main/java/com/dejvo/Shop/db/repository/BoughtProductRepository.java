@@ -111,7 +111,7 @@ public class BoughtProductRepository {
 
     public List<BoughtProduct> getAllProductByProductId(int productid){
         try{
-            String query="select customer_id, product_id , count, bought_at from bought_product where product_id="+productid;
+            String query="select * from bought_product where product_id="+productid;
             List<BoughtProduct> allboughtproduct=jdbcTemplate.query(query,boughtProductMapper);
             return allboughtproduct;
         }catch (Exception e){
