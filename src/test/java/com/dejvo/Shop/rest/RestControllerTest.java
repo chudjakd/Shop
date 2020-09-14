@@ -1,12 +1,11 @@
 package com.dejvo.Shop.rest;
 
-import com.dejvo.Shop.db.request.BuyProductRequest;
-import com.dejvo.Shop.db.request.ProductDiscountUpdate;
-import com.dejvo.Shop.db.request.UpdateProductRequest;
+import com.dejvo.Shop.db.request.*;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
@@ -300,21 +299,26 @@ public class RestControllerTest {
     @Test
     public void testCustomerAccount() throws Exception {
         Customer customer= new Customer("Jozko","Stasak","stasacik@gmail.com");
-        CustomerAccount customerAccount= new CustomerAccount(1,BigDecimal.valueOf(256.5));
 
-        mockMvc.perform(post("/api/customer")
+                String customerid=mockMvc.perform(post("/api/customer")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(customer)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-                String idofcustomer=mockMvc.perform(post("/api/customer-account")
+        int customeridtoupdate=objectMapper.readValue(customerid,Integer.class);
+        UpdateCustomerAccountMoney updateCustomerAccountMoney= new UpdateCustomerAccountMoney(customeridtoupdate,BigDecimal.valueOf(300));
+
+                String messagefromupdate=mockMvc.perform(patch("/api/customer-account")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(customerAccount)))
+                .content(objectMapper.writeValueAsString(updateCustomerAccountMoney)))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
 
-                        mockMvc.perform(get("/api/customer-account/"+idofcustomer)
+                        mockMvc.perform(get("/api/customer-account/"+customeridtoupdate)
                         .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk())
                         .andReturn().getResponse().getContentAsString();
@@ -353,6 +357,160 @@ public class RestControllerTest {
 
 //        BuyProductResponse buyProductResponse2=objectMapper.readValue(responseJsonFailed,BuyProductResponse.class);
         System.out.println(responseJsonFailed);
+
+    }
+
+    @Test
+    public void testovanieShoppingByCard() throws Exception {
+        //Vytvorenie customera productu a customer account pretoze su potrebny na testovanie
+        Customer customer= new Customer("Jozko","Stasak","stasacik@gmail.com");
+
+        String idofcustomer=mockMvc.perform(post("/api/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isCreated())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        int customeridtoupdate=objectMapper.readValue(idofcustomer,Integer.class);
+        UpdateCustomerAccountMoney updateCustomerAccountMoney= new UpdateCustomerAccountMoney(customeridtoupdate,BigDecimal.valueOf(300));
+
+        String messagefromupdate=mockMvc.perform(patch("/api/customer-account")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateCustomerAccountMoney)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        mockMvc.perform(get("/api/customer-account/"+idofcustomer)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        Product product= new Product(1,"Taska","Taska rapotaska",BigDecimal.valueOf(24.99),11,Timestamp.from(Instant.now()),"Toys");
+
+        String productIdJson=mockMvc.perform(post("/api/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(product)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+        int productIdFromCreateProduct=objectMapper.readValue(productIdJson,int.class);
+
+
+        //Otestovanie uspesneho nakupu by credit card
+        BuyProductByCardRequest Request= new BuyProductByCardRequest(1
+                                                                    ,1
+                                                                    ,"4405 7789 6739 6700"
+                                                                    ,"04/22","271"
+                                                                    ,3);
+
+                 String responsejson=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        System.out.println("Ocakavame uspesny nakup: "+responsejson);
+
+        //Otestovanie nakupu by card ked product neexistuje
+        BuyProductByCardRequest Request1= new BuyProductByCardRequest(8
+                ,1
+                ,"4405 7789 6739 6700"
+                ,"04/22","271"
+                ,3);
+
+        String responsejsonfailedbyproductid=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request1)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        System.out.println("Ocakavame chybne product id"+responsejsonfailedbyproductid);
+
+        //Testovanie requestu ktory ma chybne customer id
+        BuyProductByCardRequest Request2= new BuyProductByCardRequest(1
+                ,8
+                ,"4405 7789 6739 6700"
+                ,"04/22","271"
+                ,3);
+
+        String responsejsonfailedbycustomerid=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request2)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        System.out.println("Chybne customer id: "+responsejsonfailedbycustomerid);
+
+
+        //Otestovanie requestu s chybnym count od buying product
+        BuyProductByCardRequest Request3= new BuyProductByCardRequest(1
+                ,1
+                ,"4405 7789 6739 6700"
+                ,"04/22","271"
+                ,125);
+
+        String responsejsonfailedbycountofproduct=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request3)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        //Otestovanie requestu s chybnou card number
+        BuyProductByCardRequest Request4= new BuyProductByCardRequest(1
+                ,1
+                ,"44057789 6739 6700"
+                ,"04/22","271"
+                ,2);
+
+        String responsejsonfailedbycardnumber=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request4)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        System.out.println("Chybny card number: "+responsejsonfailedbycardnumber);
+
+        //Otestovanie requestu s chybnou datecard
+        BuyProductByCardRequest Request5= new BuyProductByCardRequest(1
+                ,1
+                ,"4405 7789 6739 6700"
+                ,"04/2","271"
+                ,2);
+
+        String responsejsonfailedbydatecard=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request5)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        System.out.println("Chybny date card: "+responsejsonfailedbydatecard);
+
+        //Otestovanie requestu s chybnym safe codom
+        BuyProductByCardRequest Request6= new BuyProductByCardRequest(1
+                ,1
+                ,"4405 7789 6739 6700"
+                ,"04/22","27a"
+                ,2);
+
+        String responsejsonfailedbysafecode=mockMvc.perform(post("/api/shopping/card")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Request6)))
+                .andExpect(status().isPreconditionFailed())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        System.out.println("Chybny safe code: "+responsejsonfailedbysafecode);
 
     }
 
