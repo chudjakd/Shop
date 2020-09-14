@@ -53,6 +53,7 @@ public class ShoppingImplementaciaTest {
         Assert.assertNotNull(productInterface.createProduct(product));
         Assert.assertNotNull(productInterface.createProduct(product1));
 
+        // TODO: 14. 9. 2020 Davaj pozor ked sa vytvori hore customer tak po novom sa vytvara aj customer account takze dole pod tymto vymenit to namiesto update customer accout
         Long customerid=customerInterface.readAllCustomers().get(0).getId();
         Long customerid2=customerInterface.readAllCustomers().get(1).getId();
         CustomerAccount customerAccount=new CustomerAccount(customerid.intValue(),BigDecimal.valueOf(523.63));
