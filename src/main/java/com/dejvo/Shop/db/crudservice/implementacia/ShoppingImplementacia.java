@@ -3,10 +3,12 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 import com.dejvo.Shop.db.crudservice.*;
 import com.dejvo.Shop.db.request.BuyProductByCardRequest;
 import com.dejvo.Shop.db.request.BuyProductRequest;
+import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.helpmethods.shopping.ShoppingHelpMethods;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -20,22 +22,25 @@ public class ShoppingImplementacia implements ShoppingInterface {
     ShoppingHelpMethods shoppingHelpMethods;
     CustomerAccountInterface customerAccountInterface;
     BoughtProductInterface boughtProductInterface;
+    UpdateCustomerAccountMoney updateCustomerAccountMoney;
 
-    public ShoppingImplementacia(ProductInterface productInterface, CustomerInterface customerInterface, ShoppingHelpMethods shoppingHelpMethods, CustomerAccountImplementacia customerAccountImplementacia, BoughtProductInterface boughtProductInterface) {
+    @Autowired
+    public ShoppingImplementacia(ProductInterface productInterface, CustomerInterface customerInterface, ShoppingHelpMethods shoppingHelpMethods, CustomerAccountInterface customerAccountInterface, BoughtProductInterface boughtProductInterface, UpdateCustomerAccountMoney updateCustomerAccountMoney) {
         this.productInterface = productInterface;
         this.customerInterface = customerInterface;
         this.shoppingHelpMethods = shoppingHelpMethods;
-        this.customerAccountInterface = customerAccountImplementacia;
+        this.customerAccountInterface = customerAccountInterface;
         this.boughtProductInterface = boughtProductInterface;
+        this.updateCustomerAccountMoney = updateCustomerAccountMoney;
     }
 
     /*
-        Nie je to moc zrozumitelne tak radsej komentik, 1. if nam zistuje ci product ktory pride v requeste existuje
-        2. if nam zistuje ci dany customer existuje
-        3. if nam zistuje ci customer ktory chce nakupit urcity pocet produktov ma dostatocny pocet penazi
-        4. if nam zistuje ci je pocet produktov na sklade vacsi alebo rovny tomu ktory prisiel z requestu
-        5. if nam zistuje ci uz nahodou customer nema produkt ktory chce kupit ak ma tak len pripocitame k tomu existujucemu poctu ten pocet ktory chce nakupit
-         */
+            Nie je to moc zrozumitelne tak radsej komentik, 1. if nam zistuje ci product ktory pride v requeste existuje
+            2. if nam zistuje ci dany customer existuje
+            3. if nam zistuje ci customer ktory chce nakupit urcity pocet produktov ma dostatocny pocet penazi
+            4. if nam zistuje ci je pocet produktov na sklade vacsi alebo rovny tomu ktory prisiel z requestu
+            5. if nam zistuje ci uz nahodou customer nema produkt ktory chce kupit ak ma tak len pripocitame k tomu existujucemu poctu ten pocet ktory chce nakupit
+             */
     @Override
     public BuyProductResponse buyProduct(BuyProductRequest buyProductRequest) {
 
@@ -68,7 +73,8 @@ public class ShoppingImplementacia implements ShoppingInterface {
         if (newMoneyOfCustomer != null) {
             int newCountOfProductAtWarehouse = countofproductatwarehouse - countofbuyingproduct;   //Odpocitanie poctu ktory customer nakupil od celkoveho poctu produktu na sklade
             productInterface.updateCountOfProduct(productid, newCountOfProductAtWarehouse);         // Update poctu produktov na sklade kedze doslo k uspesnemu nakupu
-            customerAccountInterface.updateMoneyOfCustomerAccount(newMoneyOfCustomer, customerid);   //Update penazi customera ktory uspesne nakupil
+            UpdateCustomerAccountMoney updateCustomerAccountMoney= new UpdateCustomerAccountMoney(customerid,newMoneyOfCustomer);  //Vytvorenie update
+            customerAccountInterface.updateMoneyOfCustomerAccount(updateCustomerAccountMoney);   //Update penazi customera ktory uspesne nakupil
             BoughtProduct boughtProductFromDatabase = boughtProductInterface.getBoughtProductByCustomerIdAndProductId(customerid, productid);
 
             // 5. if
