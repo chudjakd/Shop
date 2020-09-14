@@ -2,6 +2,7 @@ package com.dejvo.Shop.db.crudservice.implementacia;
 
 import com.dejvo.Shop.db.crudservice.CustomerAccountInterface;
 import com.dejvo.Shop.db.repository.CustomerAccountRepository;
+import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,8 @@ public class CustomerAccountImplementacia implements CustomerAccountInterface {
     }
 
     @Override
-    public Integer updateMoneyOfCustomerAccount(BigDecimal money, int id) {
-        return customerAccountRepository.updateCustomerAccountMoney(money,id);
+    public Integer updateMoneyOfCustomerAccount(UpdateCustomerAccountMoney updateCustomerAccountMoney) {
+        return customerAccountRepository.updateCustomerAccountMoney(updateCustomerAccountMoney.getMoney(),updateCustomerAccountMoney.getCustomerid());
     }
 
     @Override
