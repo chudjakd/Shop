@@ -1,10 +1,8 @@
 package com.dejvo.Shop.rest;
 
+import com.dejvo.Shop.db.crudservice.BoughtProductInterface;
 import com.dejvo.Shop.db.request.*;
-import com.dejvo.Shop.model.Customer;
-import com.dejvo.Shop.model.CustomerAccount;
-import com.dejvo.Shop.model.Product;
-import com.dejvo.Shop.model.Seller;
+import com.dejvo.Shop.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +35,9 @@ public class RestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BoughtProductInterface boughtProductInterface;
 
     private final ObjectMapper objectMapper= new ObjectMapper();
 
@@ -511,6 +512,72 @@ public class RestControllerTest {
                 .getResponse()
                 .getContentAsString();
         System.out.println("Chybny safe code: "+responsejsonfailedbysafecode);
+
+    }
+
+    @Test
+    public void testBoughtProduct() throws Exception {
+
+
+        Product product= new Product(1,"Jazda","Jazdovic",BigDecimal.valueOf(1.59),20,Timestamp.from(Instant.now()),"Toys");
+        Product product1=new Product(1,"Slon","Elefander skvrnity",BigDecimal.valueOf(0.59),15,Timestamp.from(Instant.now()),"Toys");
+
+        Customer customer= new Customer("Jozko","picko@gmail.com","Alopova 54");
+        Customer customer1= new Customer("Alfonz","lojzik@gmail.com","Lojzova 54");
+        //Add more products
+        List<Product> moreProducts=new ArrayList<>();
+        moreProducts.add(product); moreProducts.add(product1);
+
+        mockMvc.perform(post("/api/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(moreProducts)))
+                .andExpect(status().isOk());
+
+        //Add customer
+        String idofcustomer= mockMvc.perform(post("/api/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customer)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+        //Add customer1
+        String idofcustomer1= mockMvc.perform(post("/api/customer")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(customer1)))
+                .andExpect(status().isCreated())
+                .andReturn().getResponse().getContentAsString();
+
+
+        //Add bought product to database
+        BoughtProduct boughtProduct= new BoughtProduct(1,1,5,Timestamp.from(Instant.now()));
+        BoughtProduct boughtProduct1= new BoughtProduct(1,2,2,Timestamp.from(Instant.now()));
+        BoughtProduct boughtProduct2= new BoughtProduct(2,2,2,Timestamp.from(Instant.now()));
+        BoughtProduct boughtProduct3= new BoughtProduct(2,1,10,Timestamp.from(Instant.now()));
+
+        boughtProductInterface.createBoughtProduct(boughtProduct);
+        boughtProductInterface.createBoughtProduct(boughtProduct1);
+        boughtProductInterface.createBoughtProduct(boughtProduct2);
+        boughtProductInterface.createBoughtProduct(boughtProduct3);
+
+                 String listofallproductbycustomerid=mockMvc.perform(get("/api/bought-product/customer/"+idofcustomer)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+                 List<BoughtProduct> boughtProductListByCustomerId=objectMapper.readValue(listofallproductbycustomerid, new TypeReference<List<BoughtProduct>>() {
+                 });
+
+                 Assert.assertEquals(2,boughtProductListByCustomerId.size());
+
+        String listofallproductbyproductid=mockMvc.perform(get("/api/bought-product/product/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        List<BoughtProduct> boughtProductListByProductId= objectMapper.readValue(listofallproductbyproductid, new TypeReference<List<BoughtProduct>>() {
+        });
+
+        Assert.assertEquals(2,boughtProductListByProductId.size());
+
 
     }
 

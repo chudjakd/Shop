@@ -19,13 +19,23 @@ public class RestBoughtProduct {
     @Autowired
     BoughtProductInterface boughtProductInterface;
 
-    @GetMapping("/bought-product/{id}")
+    @GetMapping("/bought-product/customer/{id}")
     public ResponseEntity getAllBoughtProductByCustomerId(@PathVariable int id){
         List<BoughtProduct> allproductfromdatabasebyid=boughtProductInterface.getAllBoughtProductsByCustomerId(id);
         if(allproductfromdatabasebyid!=null){
             return new ResponseEntity<>(allproductfromdatabasebyid, HttpStatus.OK);
         }else{
             return new ResponseEntity<>(null,HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+    @GetMapping("/bought-product/product/{id}")
+    public ResponseEntity getAllBoughtProductByProductId(@PathVariable int id){
+        List<BoughtProduct> listallboughtproductbyproductid= boughtProductInterface.getAllBoughtProductByProductId(id);
+        if(listallboughtproductbyproductid!=null){
+            return new ResponseEntity<>(listallboughtproductbyproductid,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Mam taky pocit ze tento product si este nikto nezakupil",HttpStatus.PRECONDITION_FAILED);
         }
     }
 }
