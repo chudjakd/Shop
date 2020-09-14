@@ -51,7 +51,7 @@ public class RestCustomer {
             if(key==null){
                 return new ResponseEntity<>("Tak toto nevyslo",HttpStatus.PRECONDITION_FAILED);
             }else {
-                return new ResponseEntity<>(customerid,HttpStatus.OK);
+                return new ResponseEntity<>(customerid,HttpStatus.CREATED);
             }
         }
         else {
