@@ -7,7 +7,7 @@ import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import com.dejvo.Shop.model.BoughtProduct;
 import com.dejvo.Shop.model.Product;
-import com.dejvo.Shop.helpmethods.shopping.ShoppingHelpMethods;
+import com.dejvo.Shop.help.methods.shopping.ShoppingHelpMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
