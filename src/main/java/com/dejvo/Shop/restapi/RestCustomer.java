@@ -6,6 +6,7 @@ import com.dejvo.Shop.db.request.UpdateCustomerRequest;
 import com.dejvo.Shop.model.Customer;
 import com.dejvo.Shop.model.CustomerAccount;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class RestCustomer {
 
 
     @GetMapping("/customers")
+    @Profile("admin")
     public ResponseEntity getAllCustomers(){
 
         List<Customer> listOfCustomers=customerInterface.readAllCustomers();
@@ -32,6 +34,7 @@ public class RestCustomer {
     }
 
     @GetMapping("/customer/{id}")
+    @Profile("admin")
     public ResponseEntity getCustomerById(@PathVariable("id") Long id){
         Customer customer=customerInterface.readCustomerById(id);
         if(customer!=null){
@@ -43,6 +46,7 @@ public class RestCustomer {
     }
 
     @PostMapping("/customer")
+    @Profile({"customer","admin"})
     public ResponseEntity createCustomer(@RequestBody Customer customer){
         Integer customerid=customerInterface.createCustomer(customer);
         if(customerid!=null){
@@ -60,6 +64,7 @@ public class RestCustomer {
     }
 
     @DeleteMapping("/customer/{id}")
+    @Profile("admin")
     public ResponseEntity deleteCustomerByID(@PathVariable("id") Long id){
         if(customerInterface.readCustomerById(id)==null){
             return new ResponseEntity<>("Customer s tymto id neexistuje",HttpStatus.PRECONDITION_FAILED);
@@ -72,6 +77,7 @@ public class RestCustomer {
     }
 
     @PutMapping("/customer/{id}")
+    @Profile({"customer","admin"})
     public ResponseEntity updateCustomerById(@PathVariable("id") Long id,@RequestBody UpdateCustomerRequest request){
         if(customerInterface.updateCustomer(request,id)==1){
             return new ResponseEntity<>("{}",HttpStatus.OK);
@@ -81,6 +87,7 @@ public class RestCustomer {
         }
     }
     @PostMapping("/customer/account")
+    @Profile("admin")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
         Integer key=customerAccountInterface.createCustomerAccount(customerAccount);
         if(key==null){

@@ -5,6 +5,7 @@ import com.dejvo.Shop.db.crudservice.BoughtProductInterface;
 import com.dejvo.Shop.db.request.GetProductsByTimestamp;
 import com.dejvo.Shop.model.BoughtProduct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ public class RestBoughtProduct {
     BoughtProductInterface boughtProductInterface;
 
     @GetMapping("/bought-product/customer/{id}")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllBoughtProductByCustomerId(@PathVariable int id){
         List<BoughtProduct> allproductfromdatabasebyid=boughtProductInterface.getAllBoughtProductsByCustomerId(id);
         if(allproductfromdatabasebyid!=null){
@@ -27,7 +29,9 @@ public class RestBoughtProduct {
         }
     }
 
+
     @GetMapping("/bought-product/product/{id}")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllBoughtProductByProductId(@PathVariable int id){
         List<BoughtProduct> listallboughtproductbyproductid= boughtProductInterface.getAllBoughtProductByProductId(id);
         if(listallboughtproductbyproductid!=null){
@@ -38,6 +42,7 @@ public class RestBoughtProduct {
     }
 
     @PostMapping("/bought-product/time")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllProductByTime(@RequestBody GetProductsByTimestamp getProductsByTimestamp){
         List<BoughtProduct> allProductByTimestamp= boughtProductInterface.getAllBoughtProductByTimeStamp(getProductsByTimestamp.getBefore(),getProductsByTimestamp.getAfter());
         if(allProductByTimestamp!=null){

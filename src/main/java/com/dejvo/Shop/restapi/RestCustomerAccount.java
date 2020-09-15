@@ -3,6 +3,7 @@ package com.dejvo.Shop.restapi;
 import com.dejvo.Shop.db.crudservice.CustomerAccountInterface;
 import com.dejvo.Shop.db.request.UpdateCustomerAccountMoney;
 import com.dejvo.Shop.model.CustomerAccount;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class RestCustomerAccount {
 
     //Treba davat pozor lebo toto mam dva krat da sa to vytvorit aj cez restcustomer je to tam asi lepsie
     @PostMapping("/customer-account")
+    @Profile("admin")
     public ResponseEntity createCustomerAccount(@RequestBody CustomerAccount customerAccount){
 
         Integer responseFromCreate=customerAccountInterface.createCustomerAccount(customerAccount);
@@ -31,6 +33,7 @@ public class RestCustomerAccount {
     }
 
     @GetMapping("/customer-account/{id}")
+    @Profile("admin")
     public ResponseEntity getCustomerAccountById(@PathVariable("id") int customerid){
         CustomerAccount customerAccount=customerAccountInterface.getCustomerByIdOfCustomer(customerid);
         if(customerAccount!=null){
@@ -40,6 +43,7 @@ public class RestCustomerAccount {
         }
     }
     @PatchMapping("/customer-account")
+    @Profile({"customer","admin"})
     public ResponseEntity updateCustomerMoneyByCustomerId(@RequestBody UpdateCustomerAccountMoney updateCustomerAccountMoney){
         Integer response=customerAccountInterface.updateMoneyOfCustomerAccount(updateCustomerAccountMoney);
         if(response!=null){

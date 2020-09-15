@@ -6,6 +6,7 @@ import com.dejvo.Shop.db.request.BuyProductByCardRequest;
 import com.dejvo.Shop.db.request.BuyProductRequest;
 import com.dejvo.Shop.db.response.BuyProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class RestShopping {
     ShoppingInterface shoppingInterface;
 
     @PostMapping("/shopping")
+    @Profile({"customer","admin"})
     public ResponseEntity buyProduct(@RequestBody BuyProductRequest buyProductRequest){
         BuyProductResponse response=shoppingInterface.buyProduct(buyProductRequest);
         if(response.isSuccess()){
@@ -27,6 +29,7 @@ public class RestShopping {
     }
 
     @PostMapping("/shopping/card")
+    @Profile({"customer","admin"})
     public ResponseEntity buyProductByCard(@RequestBody BuyProductByCardRequest buyProductByCardRequest){
         BuyProductResponse response= shoppingInterface.buyProductByCard(buyProductByCardRequest);
         if(response.isSuccess()){

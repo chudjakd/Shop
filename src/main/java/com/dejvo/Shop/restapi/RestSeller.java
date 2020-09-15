@@ -7,6 +7,7 @@ import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
 import com.dejvo.Shop.model.SellerWithStatistic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class RestSeller {
     ProductInterface productInterface;
 
     @GetMapping("/seller/{id}/products")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllProductBySellerId(@PathVariable int id){
         List<Product> listOfAllProducts=productInterface.getAllProductBySellerId(id);
         if(listOfAllProducts==null){
@@ -33,12 +35,14 @@ public class RestSeller {
     }
 
     @GetMapping("/sellers")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllSellers(){
         List<Seller> sellerList=sellerInterface.readAllSellers();
         return new ResponseEntity<>(sellerList, HttpStatus.OK);
     }
 
     @GetMapping("/seller/{id}")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getSellerById(@PathVariable Long id){
         Seller seller= sellerInterface.readSellerById(id);
         if(seller!=null){
@@ -50,6 +54,7 @@ public class RestSeller {
     }
 
     @PostMapping("/seller")
+    @Profile({"seller","admin"})
     public ResponseEntity createSeller(@RequestBody Seller seller){
         Integer sellerKey=sellerInterface.createSeller(seller);
         if(sellerKey!=null){
@@ -61,6 +66,7 @@ public class RestSeller {
     }
 
     @PatchMapping("/seller/{id}")
+    @Profile({"seller","admin"})
     public ResponseEntity updateSeller(@RequestBody UpdateSellerRequest request, @PathVariable("id") Long id){
         if(sellerInterface.readSellerById(id)!=null){
             if(sellerInterface.updateSeller(request,id)==0){
@@ -76,6 +82,7 @@ public class RestSeller {
         }
     }
     @DeleteMapping("/seller/{id}")
+    @Profile({"seller","admin"})
     public ResponseEntity deleteSellerById(@PathVariable Long id){
         if(sellerInterface.readSellerById(id)!=null){
             sellerInterface.deleteSeller(id);
@@ -87,6 +94,7 @@ public class RestSeller {
     }
 
     @GetMapping("/seller/mostpopular")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getMostPopularSellers(){
         List<SellerWithStatistic> sellerWithStatistics=sellerInterface.getMostPopularSeller();
         if(sellerWithStatistics!=null){
@@ -97,6 +105,7 @@ public class RestSeller {
     }
 
     @GetMapping("/seller/bestseller")
+    @Profile({"customer","seller","admin"})
     public ResponseEntity getAllSellersSortedByMostSellProducts(){
         List<SellerWithStatistic> sellerWithStatistics=sellerInterface.getSellerSortedByMostSellProducts();
         if(sellerWithStatistics!=null){
