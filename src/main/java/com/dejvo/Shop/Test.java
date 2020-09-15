@@ -7,12 +7,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class Test {
-
-
 
 
     public Test() {
@@ -33,7 +35,25 @@ public class Test {
 
 
     }
-
-
-
 }
+
+//    public static void main(String[] args) {}
+//        Timestamp TimeStamp2808=Timestamp.valueOf(LocalDateTime.of(2020,8,28,00,00,00));
+//        Timestamp TimeStamp2809=Timestamp.valueOf(LocalDateTime.of(2020,9,28,00,00,00));
+//
+//        Timestamp TimeStamp2908=Timestamp.valueOf(LocalDateTime.of(2020,07,29,00,00,00));
+//        Timestamp TimeStamp0209=Timestamp.valueOf(LocalDateTime.of(2020,9,2,00,00,00));
+//        Timestamp TimeStamp0309=Timestamp.valueOf(LocalDateTime.of(2020,9,3,00,00,00));
+//
+//        List<Timestamp> timestamps= new ArrayList<>();
+//        timestamps.add(TimeStamp2908);
+//        timestamps.add(TimeStamp0209);
+//        timestamps.add(TimeStamp0309);
+//
+//        for(Timestamp timestamp: timestamps){
+//            if((timestamp.after(TimeStamp2808)&&(timestamp.before(TimeStamp2809)))){
+//                System.out.println("Yes");
+//            }
+//        }
+//    }
+
