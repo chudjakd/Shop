@@ -42,3 +42,10 @@ CREATE TABLE bought_product (
   count int(11) NOT NULL,
   bought_at datetime NOT NULL
   );
+
+DROP TABLE IF EXISTS login;
+CREATE TABLE login (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  name varchar(45) NOT NULL,
+  password varchar(45) NOT NULL
+  );
