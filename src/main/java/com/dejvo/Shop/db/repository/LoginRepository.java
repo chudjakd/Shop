@@ -1,5 +1,6 @@
 package com.dejvo.Shop.db.repository;
 
+import com.dejvo.Shop.db.mapper.LoginMapper;
 import com.dejvo.Shop.db.request.LoginRequest;
 import com.dejvo.Shop.db.response.LoginResponse;
 import com.dejvo.Shop.model.Login;
@@ -11,11 +12,13 @@ import org.springframework.stereotype.Component;
 public class LoginRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
+    @Autowired
+    LoginMapper loginMapper;
 
     public LoginResponse trylogin(LoginRequest loginRequest){
         String url="SELECT * FROM LOGIN WHERE name="+"'"+loginRequest.getName()+"'";
         try {
-            Login login=jdbcTemplate.queryForObject(url,Login.class);
+            Login login=jdbcTemplate.queryForObject(url,loginMapper);
             if(login!=null){
                 if(login.getPassword().equals(loginRequest.getPassword())){
                     return new LoginResponse(true,"Login uspesny");
@@ -26,7 +29,7 @@ public class LoginRepository {
                 return new LoginResponse(false,"Meno nenajdene skuste si ho skontrolovat");
             }
         }catch (Exception e){
-            return null;
+            return new LoginResponse(false,"Skuste skontrolovat udaje");
         }
     }
 
