@@ -52,4 +52,9 @@ public class SellerImplementation implements SellerInterface {
     public List<SellerWithStatistic> getMostPopularSeller() {
         return sellerRepository.getMostPopularSeller();
     }
+
+    @Override
+    public List<SellerWithStatistic> getSellerSortedByMostSellProducts() {
+        return sellerRepository.getAllSellerSortedByMostSellProducts();
+    }
 }

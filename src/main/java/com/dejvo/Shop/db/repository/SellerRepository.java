@@ -4,6 +4,7 @@ import com.dejvo.Shop.db.mapper.BoughtProductMapper;
 import com.dejvo.Shop.db.mapper.ProductRowMapper;
 import com.dejvo.Shop.db.mapper.SellerRowMapper;
 import com.dejvo.Shop.db.request.UpdateSellerRequest;
+import com.dejvo.Shop.help.classes.ProductIdAndCount;
 import com.dejvo.Shop.model.BoughtProduct;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
@@ -13,6 +14,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -109,45 +111,54 @@ public class SellerRepository {
 
     public List<SellerWithStatistic> getMostPopularSeller(){
         try{
+            List<ProductIdAndCount> skuska= new ArrayList<>();
             String url="SELECT product_id, count from bought_product";
-            List<Integer> allboughtproduct=jdbcTemplate.query(url, new RowMapper<Integer>() {
-                @Override
-                public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
-                    return resultSet.getInt("product_id");
-                }
-            });
-            String urlproduct="SELECT * from product";
+            List<ProductIdAndCount> allboughtproduct=jdbcTemplate.query(url, new RowMapper<ProductIdAndCount>() {
+                        @Override
+                        public ProductIdAndCount mapRow(ResultSet resultSet, int i) throws SQLException {
+                            return new ProductIdAndCount(resultSet.getInt("product_id"),resultSet.getInt("count"));
+                        }
+                    });
+                    String urlproduct = "SELECT * from product";
             List<Product> allproducts=jdbcTemplate.query(urlproduct,productRowMapper);
+            HashMap<Integer,Integer> selleridandcountoftipsellproducts= new HashMap<>();
             HashMap<Integer,Integer> selleridandcountofsellproducts= new HashMap<>();
-            for(Integer value:allboughtproduct){
-                int productid=value;
+            for(ProductIdAndCount productIdAndCount:allboughtproduct){
+                int productid=productIdAndCount.getProductid();
                 Product productright=allproducts.stream().filter(product -> product.getId()==productid).findFirst().orElse(null);
                 if(productid==0 || productright==null){
 
                 }else{
-                    //
+
                     int sellerid=productright.getSellerId();
-
-                    if(selleridandcountofsellproducts.containsKey(sellerid)){
-                        int newvalue=selleridandcountofsellproducts.get(sellerid)+1;
-                        selleridandcountofsellproducts.replace(sellerid,newvalue);
+                    //tento if sluzi nato aby pocital kolko krat predal dany seller nieaky product
+                    if(selleridandcountoftipsellproducts.containsKey(sellerid)){
+                        int newvalue=selleridandcountoftipsellproducts.get(sellerid)+1;
+                        selleridandcountoftipsellproducts.replace(sellerid,newvalue);
                     }else{
-                        selleridandcountofsellproducts.put(sellerid,1);
-
+                        selleridandcountoftipsellproducts.put(sellerid,1);
+                    }
+                    //Tento if sluzi nato kolko produktov predal dany seller
+                    if(selleridandcountofsellproducts.containsKey(sellerid)){
+                        int newcount=selleridandcountofsellproducts.get(sellerid)+productIdAndCount.getCount();
+                        selleridandcountofsellproducts.replace(sellerid,newcount);
+                    }else{
+                        selleridandcountofsellproducts.put(sellerid,productIdAndCount.getCount());
                     }
                 }
+
             }
             String urlseller="SELECT * FROM SELLER";
             List<Seller> allsellers=jdbcTemplate.query(urlseller,sellerRowMapper);
             List<SellerWithStatistic> allsellerswithstatistic= new ArrayList<>();
             for(Seller seller:allsellers){
-                if(selleridandcountofsellproducts.containsKey(seller.getId())){
+                if(selleridandcountoftipsellproducts.containsKey(seller.getId())){
                     SellerWithStatistic sellerWithStatistic= new SellerWithStatistic(seller.getId()
                             ,seller.getName()
                             ,seller.getEmail()
                             ,seller.getAddress()
-                            ,selleridandcountofsellproducts.get(seller.getId())
-                            ,0);
+                            ,selleridandcountoftipsellproducts.get(seller.getId())
+                            ,selleridandcountofsellproducts.get(seller.getId()));
                     allsellerswithstatistic.add(sellerWithStatistic);
                 }else{
                     SellerWithStatistic sellerWithStatistic= new SellerWithStatistic(seller.getId()
@@ -164,6 +175,16 @@ public class SellerRepository {
 
             return allsellerswithstatistic;
         }catch (Exception e){return null;}
+    }
+
+    public List<SellerWithStatistic> getAllSellerSortedByMostSellProducts(){
+        try{
+            List<SellerWithStatistic> mostpopularsellers=getMostPopularSeller();
+            mostpopularsellers.sort(Comparator.comparing(SellerWithStatistic::getCountofsellproducts).reversed());
+            return mostpopularsellers;
+        }catch (Exception e){
+            return null;
+        }
     }
 
 }

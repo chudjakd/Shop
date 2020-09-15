@@ -15,4 +15,5 @@ public interface SellerInterface {
     public int updateSeller (UpdateSellerRequest request, Long id);
     public void deleteSeller (Long id);
     public List<SellerWithStatistic> getMostPopularSeller();
+    public List<SellerWithStatistic> getSellerSortedByMostSellProducts();
 }
