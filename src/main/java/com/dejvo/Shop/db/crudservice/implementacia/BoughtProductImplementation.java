@@ -5,6 +5,7 @@ import com.dejvo.Shop.db.repository.BoughtProductRepository;
 import com.dejvo.Shop.model.BoughtProduct;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -39,5 +40,10 @@ public class BoughtProductImplementation implements BoughtProductInterface {
     @Override
     public List<BoughtProduct> getAllBoughtProductByProductId(int productid) {
         return boughtProductRepository.getAllProductByProductId(productid);
+    }
+
+    @Override
+    public List<BoughtProduct> getAllBoughtProductByTimeStamp(Timestamp before, Timestamp after) {
+        return boughtProductRepository.getAllProductByTimeStamp(before, after);
     }
 }

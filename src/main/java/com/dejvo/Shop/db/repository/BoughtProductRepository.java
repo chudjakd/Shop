@@ -10,10 +10,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 @Component
@@ -114,6 +111,16 @@ public class BoughtProductRepository {
             String query="select * from bought_product where product_id="+productid;
             List<BoughtProduct> allboughtproduct=jdbcTemplate.query(query,boughtProductMapper);
             return allboughtproduct;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public List<BoughtProduct> getAllProductByTimeStamp(Timestamp before, Timestamp after){
+        try{
+            String url="SELECT * FROM BOUGHT_PRODUCT WHERE bought_at>"+"'"+after+"'"+" and bought_at<"+"'"+before+"'";
+            return jdbcTemplate.query(url,boughtProductMapper);
+
         }catch (Exception e){
             return null;
         }

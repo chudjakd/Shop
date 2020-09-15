@@ -2,14 +2,12 @@ package com.dejvo.Shop.restapi;
 
 
 import com.dejvo.Shop.db.crudservice.BoughtProductInterface;
+import com.dejvo.Shop.db.request.GetProductsByTimestamp;
 import com.dejvo.Shop.model.BoughtProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +34,16 @@ public class RestBoughtProduct {
             return new ResponseEntity<>(listallboughtproductbyproductid,HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Mam taky pocit ze tento product si este nikto nezakupil",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+    @PostMapping("/bought-product/time")
+    public ResponseEntity getAllProductByTime(@RequestBody GetProductsByTimestamp getProductsByTimestamp){
+        List<BoughtProduct> allProductByTimestamp= boughtProductInterface.getAllBoughtProductByTimeStamp(getProductsByTimestamp.getBefore(),getProductsByTimestamp.getAfter());
+        if(allProductByTimestamp!=null){
+            return new ResponseEntity<>(allProductByTimestamp,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Tak toto nevyslo",HttpStatus.PRECONDITION_FAILED);
         }
     }
 }
