@@ -28,6 +28,16 @@ public class LoginRepository {
         }catch (Exception e){
             return null;
         }
+    }
 
+    public Integer createlogin(LoginRequest loginRequest){
+        String url="INSERT INTO LOGIN (name,password) VALUES(?,?)";
+        try {
+            jdbcTemplate.update(url,loginRequest.getName(),loginRequest.getPassword());
+            return 1;
+        }catch (Exception e){
+            return null;
+        }
     }
 }
+
