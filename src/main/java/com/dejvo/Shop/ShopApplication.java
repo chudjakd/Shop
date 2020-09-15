@@ -11,7 +11,6 @@ public class ShopApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext kontext;
 		kontext=SpringApplication.run(ShopApplication.class, args);
-
 	}
 
 }
