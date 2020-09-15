@@ -1,8 +1,13 @@
 package com.dejvo.Shop;
 
 import com.dejvo.Shop.model.Customer;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -17,7 +22,20 @@ import java.util.List;
 public class Test {
 
 
-    public Test() {
+    public static void main(String[] args) {
+        try {
+            PropertiesConfiguration properties = new PropertiesConfiguration("C://Users//David Chudjak//IdeaProjects//Shop//src//main//resources//application.properties");
+            properties.setProperty("spring.profiles.active", "jazda");
+            properties.save();
+
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+//    public Test() {
 //        RestTemplate restTemplate= new RestTemplate();
 //        this.jdbcTemplate = jdbcTemplate;
 //        Customer customer= new Customer();
@@ -34,26 +52,4 @@ public class Test {
 //                +list.get(0).getName());
 
 
-    }
-}
-
-//    public static void main(String[] args) {}
-//        Timestamp TimeStamp2808=Timestamp.valueOf(LocalDateTime.of(2020,8,28,00,00,00));
-//        Timestamp TimeStamp2809=Timestamp.valueOf(LocalDateTime.of(2020,9,28,00,00,00));
-//
-//        Timestamp TimeStamp2908=Timestamp.valueOf(LocalDateTime.of(2020,07,29,00,00,00));
-//        Timestamp TimeStamp0209=Timestamp.valueOf(LocalDateTime.of(2020,9,2,00,00,00));
-//        Timestamp TimeStamp0309=Timestamp.valueOf(LocalDateTime.of(2020,9,3,00,00,00));
-//
-//        List<Timestamp> timestamps= new ArrayList<>();
-//        timestamps.add(TimeStamp2908);
-//        timestamps.add(TimeStamp0209);
-//        timestamps.add(TimeStamp0309);
-//
-//        for(Timestamp timestamp: timestamps){
-//            if((timestamp.after(TimeStamp2808)&&(timestamp.before(TimeStamp2809)))){
-//                System.out.println("Yes");
-//            }
-//        }
-//    }
 
