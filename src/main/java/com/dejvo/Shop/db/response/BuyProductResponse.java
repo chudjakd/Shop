@@ -18,6 +18,9 @@ public class BuyProductResponse {
         this.errormessage = errormessage;
     }
 
+    public BuyProductResponse() {
+    }
+
     public boolean isSuccess() {
         return success;
     }
