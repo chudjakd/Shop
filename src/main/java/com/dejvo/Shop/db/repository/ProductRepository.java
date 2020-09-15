@@ -245,4 +245,22 @@ public class ProductRepository {
         }
     }
 
+    public List<Product> getAllProductsByCategory(String category){
+        if(category.equals("foodstuff")){
+            category="Food stuff";
+        }else {
+            if(Character.isLetter(category.charAt(0))&&Character.isLowerCase(category.charAt(0))){
+                StringBuilder newcategory= new StringBuilder(category);
+                newcategory.setCharAt(0,category.toUpperCase().charAt(0));
+                category=newcategory.toString();
+            }
+        }
+        try{
+            String url= "SELECT * FROM PRODUCT WHERE CATEGORY="+"'"+category+"'";
+            return jdbcTemplate.query(url,productRowMapper);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 }

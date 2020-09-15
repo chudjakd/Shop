@@ -23,5 +23,6 @@ public interface ProductInterface {
     public Integer updateMoreProducts(List<UpdateProductRequest>requests);
     public List<Integer> getAllIdOfProducts();
     public Integer updateProductByDiscount(ProductDiscountUpdate productDiscountUpdate);
+    public List<Product> getAllProductsByCategory(String category);
 
 }

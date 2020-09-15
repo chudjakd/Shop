@@ -75,5 +75,10 @@ public class ProductImplementation implements ProductInterface {
         return productRepository.editProductsDiscountThem(productDiscountUpdate);
     }
 
+    @Override
+    public List<Product> getAllProductsByCategory(String category) {
+        return productRepository.getAllProductsByCategory(category);
+    }
+
 
 }

@@ -94,4 +94,14 @@ public class RestProduct {
             return new ResponseEntity<>("Todle nevyslo neviem co je zle asi idecka",HttpStatus.PRECONDITION_FAILED);
         }
     }
+
+    @GetMapping("/products/category/{category}")
+    public ResponseEntity getAllProductsByCategory(@PathVariable("category") String category){
+        List<Product> allproductsbycategory=productInterface.getAllProductsByCategory(category);
+        if(allproductsbycategory!=null){
+            return new ResponseEntity<>(allproductsbycategory,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Skuste skontrolovat ci ste zadali spravne category",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
 }
