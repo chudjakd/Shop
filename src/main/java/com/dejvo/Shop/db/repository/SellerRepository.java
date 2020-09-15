@@ -109,7 +109,7 @@ public class SellerRepository {
 
     public List<SellerWithStatistic> getMostPopularSeller(){
         try{
-            String url="SELECT product_id from bought_product";
+            String url="SELECT product_id, count from bought_product";
             List<Integer> allboughtproduct=jdbcTemplate.query(url, new RowMapper<Integer>() {
                 @Override
                 public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -125,12 +125,15 @@ public class SellerRepository {
                 if(productid==0 || productright==null){
 
                 }else{
+                    //
                     int sellerid=productright.getSellerId();
+
                     if(selleridandcountofsellproducts.containsKey(sellerid)){
                         int newvalue=selleridandcountofsellproducts.get(sellerid)+1;
                         selleridandcountofsellproducts.replace(sellerid,newvalue);
                     }else{
                         selleridandcountofsellproducts.put(sellerid,1);
+
                     }
                 }
             }
@@ -157,7 +160,7 @@ public class SellerRepository {
                 }
             }
 
-            allsellerswithstatistic.sort(Comparator.comparing(SellerWithStatistic::getCountoftipsofsellproduct));
+            allsellerswithstatistic.sort(Comparator.comparing(SellerWithStatistic::getCountoftipsofsellproduct).reversed());
 
             return allsellerswithstatistic;
         }catch (Exception e){return null;}

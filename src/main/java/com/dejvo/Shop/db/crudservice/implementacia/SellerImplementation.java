@@ -5,6 +5,7 @@ import com.dejvo.Shop.db.repository.SellerRepository;
 
 import com.dejvo.Shop.db.request.UpdateSellerRequest;
 import com.dejvo.Shop.model.Seller;
+import com.dejvo.Shop.model.SellerWithStatistic;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class SellerImplementation implements SellerInterface {
     @Override
     public void deleteSeller(Long id) {
      sellerRepository.deleteSeller(id);
+    }
+
+    @Override
+    public List<SellerWithStatistic> getMostPopularSeller() {
+        return sellerRepository.getMostPopularSeller();
     }
 }

@@ -5,6 +5,7 @@ import com.dejvo.Shop.db.crudservice.SellerInterface;
 import com.dejvo.Shop.db.request.UpdateSellerRequest;
 import com.dejvo.Shop.model.Product;
 import com.dejvo.Shop.model.Seller;
+import com.dejvo.Shop.model.SellerWithStatistic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,16 @@ public class RestSeller {
         }
         else {
             return new ResponseEntity<>("The seller with that id doesnt exist",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+    @GetMapping("/seller/mostpopular")
+    public ResponseEntity getMostPopularSellers(){
+        List<SellerWithStatistic> sellerWithStatistics=sellerInterface.getMostPopularSeller();
+        if(sellerWithStatistics!=null){
+            return new ResponseEntity<>(sellerWithStatistics,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Hmm toto nevyslo",HttpStatus.PRECONDITION_FAILED);
         }
     }
 
