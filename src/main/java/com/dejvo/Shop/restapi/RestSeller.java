@@ -96,4 +96,15 @@ public class RestSeller {
         }
     }
 
+    @GetMapping("/seller/bestseller")
+    public ResponseEntity getAllSellersSortedByMostSellProducts(){
+        List<SellerWithStatistic> sellerWithStatistics=sellerInterface.getSellerSortedByMostSellProducts();
+        if(sellerWithStatistics!=null){
+            return new ResponseEntity<>(sellerWithStatistics,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("Hmm toto nevyslo",HttpStatus.PRECONDITION_FAILED);
+        }
+    }
+
+
 }
