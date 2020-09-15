@@ -1,5 +1,8 @@
 package com.dejvo.Shop.db.response;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class BuyProductResponse {
 
     private boolean success;
