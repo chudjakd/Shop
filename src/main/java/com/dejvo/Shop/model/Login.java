@@ -2,10 +2,14 @@ package com.dejvo.Shop.model;
 
 import org.springframework.lang.NonNull;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "login")
 public class Login {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @NonNull
     private String name;
     @NonNull
